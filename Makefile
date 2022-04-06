@@ -15,7 +15,7 @@ default: help
 .PHONY: deps
 deps:
 	npm install
-	go install "$(terramate_lsp_url)"
+	GO111MODULE=on go install "$(terramate_lsp_url)"
 	cp -v $(go_install_dir)/terramate-lsp ./bin
 
 ## build code
