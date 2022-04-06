@@ -25,7 +25,7 @@ build: deps
 
 ## lint code
 .PHONY: lint
-lint:
+lint: deps
 	npm run lint
 
 ## test code
