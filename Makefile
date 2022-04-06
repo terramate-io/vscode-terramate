@@ -4,6 +4,10 @@ SHELL := /bin/bash -o pipefail -o errexit -o nounset
 addlicense=go run github.com/google/addlicense@v1.0.0 -ignore **/*.yml \
 	-ignore '**/node_modules/*'
 
+terramate_lsp_version=i4k-skeleton
+terramate_lsp_url=github.com/mineiros-io/terramate-lsp/cmd/terramate-lsp@$(terramate_lsp_version)
+go_install_dir=$(shell go env GOPATH)/bin
+
 .PHONY: default
 default: help
 
@@ -11,10 +15,12 @@ default: help
 .PHONY: deps
 deps:
 	npm install
+	go install "$(terramate_lsp_url)"
+	cp -v $(go_install_dir)/terramate-lsp ./bin
 
 ## build code
 .PHONY: build
-build:
+build: deps
 	npm run compile
 
 ## lint code
@@ -24,7 +30,7 @@ lint:
 
 ## test code
 .PHONY: test
-test: 
+test: build
 	npm run test
 
 ## add license to code

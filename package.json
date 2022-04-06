@@ -11,10 +11,15 @@
 	},
 	"categories": [
 		"Programming Languages",
-		"Azure"
+		"Other",
+		"Formatters",
+		"Linters"
 	],
 	"keywords": [
-		"multi-root ready"
+		"devops",
+		"terramate",
+		"terraform",
+		"hcl"
 	],
 	"engines": {
 		"vscode": "^1.63.0"
@@ -46,29 +51,30 @@
 				"path": "./syntaxes/terramate.tmLanguage.json"
 			}
 		],
-		"configuration": {
-			"type": "object",
-			"title": "Example configuration",
-			"properties": {
-				"languageServerExample.maxNumberOfProblems": {
-					"scope": "resource",
-					"type": "number",
-					"default": 100,
-					"description": "Controls the maximum number of problems produced by the server."
-				},
-				"languageServerExample.trace.server": {
-					"scope": "window",
-					"type": "string",
-					"enum": [
-						"off",
-						"messages",
-						"verbose"
-					],
-					"default": "off",
-					"description": "Traces the communication between VS Code and the language server."
+		"configuration": [
+			{
+				"title": "Language Server",
+				"order": 1,
+				"properties": {
+					"terramate.languageServer.pathToBinary": {
+						"order": 1,
+						"scope": "resource",
+						"type": "string",
+						"default": "",
+						"description": "Path to language server binary (optional)"
+					},
+					"terramate.languageServer.args": {
+						"order": 2,
+						"scope": "resource",
+						"type": "array",
+						"default": [
+						"-mode=stdio"
+						],
+						"description": "Arguments to pass to language server binary"
+					}
 				}
 			}
-		}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

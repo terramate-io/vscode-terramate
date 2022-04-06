@@ -15,21 +15,25 @@
  */
 
 import * as path from 'path';
-import { workspace, ExtensionContext } from 'vscode';
+
+import { 
+	workspace, 
+	ExtensionContext, 
+	ConfigurationScope,
+	WorkspaceConfiguration
+ } from 'vscode';
 
 import {
 	LanguageClient,
 	LanguageClientOptions,
-	ServerOptions,
-	TransportKind
 } from 'vscode-languageclient/node';
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
 	// TODO(i4k): get from configuration or installation dir.
-	const serverPath = "/home/i4k/src/mineiros/terramate-lsp/bin/terramate-lsp";
-	
+	const serverPath = path.join(installPath(context), "terramate-lsp");
+
 	// Options to control the language client
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
@@ -61,4 +65,12 @@ export function deactivate(): Thenable<void> | undefined {
 		return undefined;
 	}
 	return client.stop();
+}
+
+export function installPath(context: ExtensionContext): string {
+	return path.join(context.extensionPath, "bin");
+}
+
+export function config(section: string, scope?: ConfigurationScope): WorkspaceConfiguration {
+	return workspace.getConfiguration(section, scope);
 }
