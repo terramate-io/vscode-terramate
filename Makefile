@@ -2,7 +2,7 @@
 SHELL := /bin/bash -o pipefail -o errexit -o nounset
 
 addlicense=go run github.com/google/addlicense@v1.0.0 -ignore '**/*.yml' \
-	-ignore 'node_modules/*'
+	-ignore 'node_modules/**'
 
 terramate_lsp_version=i4k-skeleton
 terramate_lsp_url=github.com/mineiros-io/terramate-lsp/cmd/terramate-lsp@$(terramate_lsp_version)
