@@ -1,2 +1,3 @@
-# vscode-terramate
-Terramate VSCode Extension
+# Terramate VSCode Extension
+
+
