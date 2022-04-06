@@ -27,12 +27,9 @@ import {
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
-	// The server is implemented in node
+	// TODO(i4k): get from configuration or installation dir.
 	const serverPath = "/home/i4k/src/mineiros/terramate-lsp/bin/terramate-lsp";
-	// The debug options for the server
-	// --inspect=6009: runs the server in Node's Inspector mode so VS Code can attach to the server for debugging
-	const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
-
+	
 	// Options to control the language client
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
