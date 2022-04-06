@@ -12,6 +12,11 @@ default: help
 deps:
 	npm install
 
+## build code
+.PHONY: build
+build:
+	npm run compile
+
 ## lint code
 .PHONY: lint
 lint:

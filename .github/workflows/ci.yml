@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: ^14
       - run: make deps
+      - run: make build
       - name: Run tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
