@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022 Mineiros GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ export function activate(context: ExtensionContext) {
 	const clientOptions: LanguageClientOptions = {
 		documentSelector: [{ scheme: 'file', language: 'terramate' }],
 		synchronize: {
-			// Notify the server about file changes to '.clientrc files contained in the workspace
+			// TODO(i4k): investigate why this is needed.
 			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
 		}
 	};
