@@ -31,9 +31,6 @@ import {
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
-	// TODO(i4k): get from configuration or installation dir.
-	const serverPath = path.join(installPath(context), "terramate-lsp");
-
 	// Options to control the language client
 	const clientOptions: LanguageClientOptions = {
 		// Register the server for plain text documents
@@ -49,8 +46,8 @@ export function activate(context: ExtensionContext) {
 		'terramate',
 		'terramate',
 		{
-			command: serverPath,
-			args: ['-mode=stdio'],
+			command: getServerPath(context),
+			args: getServerArgs(context),
 			options: { }
 		},
 		clientOptions
@@ -67,10 +64,23 @@ export function deactivate(): Thenable<void> | undefined {
 	return client.stop();
 }
 
-export function installPath(context: ExtensionContext): string {
+function installPath(context: ExtensionContext): string {
 	return path.join(context.extensionPath, "bin");
 }
 
-export function config(section: string, scope?: ConfigurationScope): WorkspaceConfiguration {
+function config(section: string, scope?: ConfigurationScope): WorkspaceConfiguration {
 	return workspace.getConfiguration(section, scope);
+}
+
+function getServerPath(context: ExtensionContext): string {
+	const binPath : string = config("terramate").get("languageServer.binPath");
+	if (binPath && binPath != "") {
+		return binPath;
+	}
+
+	return path.join(installPath(context), "terramate-lsp");
+}
+
+function getServerArgs(context: ExtensionContext): string[] {
+	return config("terramate").get("languageServer.args");
 }

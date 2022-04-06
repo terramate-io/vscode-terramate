@@ -56,7 +56,7 @@
 				"title": "Language Server",
 				"order": 1,
 				"properties": {
-					"terramate.languageServer.pathToBinary": {
+					"terramate.languageServer.binPath": {
 						"order": 1,
 						"scope": "resource",
 						"type": "string",
@@ -68,7 +68,7 @@
 						"scope": "resource",
 						"type": "array",
 						"default": [
-						"-mode=stdio"
+							"-mode=stdio"
 						],
 						"description": "Arguments to pass to language server binary"
 					}
