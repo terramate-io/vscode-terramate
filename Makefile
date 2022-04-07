@@ -14,7 +14,7 @@ default: help
 .PHONY: deps
 deps:
 	npm install
-	GOBIN=$(PWD)/bin go install "$(terramate_lsp_url)"
+	GOBIN=$(shell pwd)/bin go install "$(terramate_lsp_url)"
 
 ## build code
 .PHONY: build
