@@ -6,7 +6,6 @@ addlicense=go run github.com/google/addlicense@v1.0.0 -ignore '**/*.yml' \
 
 terramate_lsp_version=i4k-skeleton
 terramate_lsp_url=github.com/mineiros-io/terramate-lsp/cmd/terramate-lsp@$(terramate_lsp_version)
-go_install_dir=$(shell go env GOPATH)/bin
 
 .PHONY: default
 default: help
@@ -15,8 +14,7 @@ default: help
 .PHONY: deps
 deps:
 	npm install
-	go install "$(terramate_lsp_url)"
-	cp -v $(go_install_dir)/terramate-lsp ./bin
+	GOBIN=$(PWD)/bin go install "$(terramate_lsp_url)"
 
 ## build code
 .PHONY: build
