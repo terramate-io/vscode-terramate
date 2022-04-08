@@ -1,0 +1,805 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "scopeName": "source.tm",
+  "fileTypes": [
+    "tm", "tm.hcl"
+  ],
+  "name": "terramate",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#attribute_definition"
+    },
+    {
+      "include": "#block"
+    },
+    {
+      "include": "#expressions"
+    }
+  ],
+  "repository": {
+    "char_escapes": {
+      "match": "\\\\[nrt\"\\\\]|\\\\u(\\h{8}|\\h{4})",
+        "comment": "Character Escapes",
+        "name": "constant.character.escape.tm"
+      },
+      "comma": {
+        "match": "\\,",
+        "comment": "Commas - used in certain expressions",
+        "name": "punctuation.separator.tm"
+      },
+      "language_constants": {
+        "match": "\\b(true|false|null)\\b",
+        "comment": "Language Constants",
+        "name": "constant.language.tm"
+      },
+      "named_value_references": {
+        "match": "\\b(global|terramate)\\b",
+        "comment": "Constant values available only to Terramate.",
+        "name": "support.constant.tm"
+      },
+      "local_identifiers": {
+        "match": "\\b(?!null|false|true)[[:alpha:]][[:alnum:]_-]*\\b",
+        "comment": "Local Identifiers",
+        "name": "variable.other.readwrite.tm"
+      },
+      "terramate_type_keywords": {
+        "match": "\\b(any|string|number|bool)\\b",
+        "comment": "Type keywords known to HCL.",
+        "name": "storage.type.tm"
+      },
+      "comments": {
+        "patterns": [
+          {
+            "include": "#inline_comments"
+          },
+          {
+            "include": "#block_comments"
+          }
+        ]
+      },
+      "inline_comments": {
+        "begin": "#|//",
+        "comment": "Inline Comments",
+        "name": "comment.line.tm",
+        "captures": {
+          "0": {
+            "name": "punctuation.definition.comment.tm"
+          }
+        },
+        "end": "$\\n?"
+      },
+      "block_comments": {
+        "begin": "/\\*",
+        "comment": "Block comments",
+        "name": "comment.block.tm",
+        "captures": {
+          "0": {
+            "name": "punctuation.definition.comment.tm"
+          }
+        },
+        "end": "\\*/"
+      },
+      "attribute_definition": {
+        "match": "(\\()?((?!null|false|true)[[:alpha:]][[:alnum:]_-]*)(\\))?\\s*(\\=(?!\\=|\\>))\\s*",
+        "comment": "Identifier \"=\" with optional parens",
+        "name": "variable.declaration.tm",
+        "captures": {
+          "1": {
+            "name": "punctuation.section.parens.begin.tm"
+          },
+          "2": {
+            "name": "variable.other.readwrite.tm"
+          },
+          "3": {
+            "name": "punctuation.section.parens.end.tm"
+          },
+          "4": {
+            "name": "keyword.operator.assignment.tm"
+          }
+        }
+      },
+      "block": {
+        "name": "meta.block.tm",
+        "begin": "(\\w+)(?:([\\s\\\"\\-[:word:]]*)(\\{))",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "match": "\\b(?:terramate|git|stack|globals|generate_hcl|content|config|gitbleh)\\b",
+                  "name": "storage.type.tm"
+                },
+                {
+                  "match": "\\b(?!null|false|true)[[:alpha:]][[:alnum:]_-]*\\b",
+                  "comment": "Identifer label",
+                  "name": "entity.name.label.tm"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#string_literals"
+                }
+              ]
+            },
+            "3": {
+              "name": "punctuation.section.block.begin.tm"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.block.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#attribute_definition"
+            },
+            {
+              "include": "#block"
+            },
+            {
+              "include": "#expressions"
+            }
+          ]
+        },
+        "expressions": {
+          "patterns": [
+            {
+              "include": "#literal_values"
+            },
+            {
+              "include": "#operators"
+            },
+            {
+              "include": "#tuple_for_expression"
+            },
+            {
+              "include": "#object_for_expression"
+            },
+            {
+              "include": "#brackets"
+            },
+            {
+              "include": "#objects"
+            },
+            {
+              "include": "#attribute_access"
+            },
+            {
+              "include": "#structural_types"
+            },
+            {
+              "include": "#functions"
+            },
+            {
+              "include": "#parens"
+            }
+          ]
+        },
+        "literal_values": {
+          "patterns": [
+            {
+              "include": "#numeric_literals"
+            },
+            {
+              "include": "#language_constants"
+            },
+            {
+              "include": "#string_literals"
+            },
+            {
+              "include": "#heredoc"
+            },
+            {
+              "include": "#terramate_type_keywords"
+            },
+            {
+              "include": "#named_value_references"
+            }
+          ]
+        },
+        "numeric_literals": {
+          "patterns": [
+            {
+              "match": "\\b\\d+([Ee][+-]?)\\d+\\b",
+              "comment": "Integer, no fraction, optional exponent",
+              "name": "constant.numeric.float.tm",
+              "captures": {
+                "1": {
+                  "name": "punctuation.separator.exponent.tm"
+                }
+              }
+            },
+            {
+              "match": "\\b\\d+(\\.)\\d+(?:([Ee][+-]?)\\d+)?\\b",
+              "comment": "Integer, fraction, optional exponent",
+              "name": "constant.numeric.float.tm",
+              "captures": {
+                "1": {
+                  "name": "punctuation.separator.decimal.tm"
+                },
+                "2": {
+                  "name": "punctuation.separator.exponent.tm"
+                }
+              }
+            },
+            {
+              "match": "\\b\\d+\\b",
+              "comment": "Integers",
+              "name": "constant.numeric.integer.tm"
+            }
+          ]
+        },
+        "string_literals": {
+          "begin": "\"",
+          "comment": "Strings",
+          "name": "string.quoted.double.tm",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.tm"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#string_interpolation"
+            },
+            {
+              "include": "#char_escapes"
+            }
+          ]
+        },
+        "string_interpolation": {
+          "begin": "(\\G|[^%$])[%$]{",
+          "comment": "String interpolation",
+          "name": "meta.interpolation.tm",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.other.interpolation.begin.tm"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "keyword.other.interpolation.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\~\\s",
+              "comment": "Trim left whitespace",
+              "name": "keyword.operator.template.left.trim.tm"
+            },
+            {
+              "match": "\\s\\~",
+              "comment": "Trim right whitespace",
+              "name": "keyword.operator.template.right.trim.tm"
+            },
+            {
+              "match": "\\b(if|else|endif|for|in|endfor)\\b",
+              "comment": "if/else/endif and for/in/endfor directives",
+              "name": "keyword.control.tm"
+            },
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#local_identifiers"
+            }
+          ]
+        },
+        "heredoc": {
+          "begin": "(\\<\\<\\-?)\\s*(\\w+)\\s*$",
+          "comment": "String Heredoc",
+          "name": "string.unquoted.heredoc.tm",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.operator.heredoc.tm"
+            },
+            "2": {
+              "name": "keyword.control.heredoc.tm"
+            }
+          },
+          "end": "^\\s*\\2\\s*$",
+          "endCaptures": {
+            "0": {
+              "comment": "The heredoc token identifier (second capture above).",
+              "name": "keyword.control.heredoc.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#string_interpolation"
+            }
+          ]
+        },
+        "operators": {
+          "patterns": [
+            {
+              "match": "\\>\\=",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\<\\=",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\=\\=",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\!\\=",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\+",
+              "name": "keyword.operator.arithmetic.tm"
+            },
+            {
+              "match": "\\-",
+              "name": "keyword.operator.arithmetic.tm"
+            },
+            {
+              "match": "\\*",
+              "name": "keyword.operator.arithmetic.tm"
+            },
+            {
+              "match": "\\/",
+              "name": "keyword.operator.arithmetic.tm"
+            },
+            {
+              "match": "\\%",
+              "name": "keyword.operator.arithmetic.tm"
+            },
+            {
+              "match": "\\&\\&",
+              "name": "keyword.operator.logical.tm"
+            },
+            {
+              "match": "\\|\\|",
+              "name": "keyword.operator.logical.tm"
+            },
+            {
+              "match": "\\!",
+              "name": "keyword.operator.logical.tm"
+            },
+            {
+              "match": "\\>",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\<",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\?",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\.\\.\\.",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "match": "\\:",
+              "scope": "keyword.operator.tm"
+            }
+          ]
+        },
+        "brackets": {
+          "begin": "\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.brackets.begin.tm"
+            }
+          },
+          "end": "(\\*?)\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.brackets.end.tm"
+            },
+            "1": {
+              "name": "keyword.operator.splat.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comma"
+            },
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#local_identifiers"
+            }
+          ]
+        },
+        "objects": {
+          "name": "meta.braces.tm",
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.braces.begin.tm"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.braces.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "match": "\\b((?!null|false|true)[[:alpha:]][[:alnum:]_-]*)\\s*(\\=)\\s*",
+              "comment": "Literal, named object key",
+              "captures": {
+                "1": {
+                  "name": "meta.mapping.key.tm string.unquoted.tm"
+                },
+                "2": {
+                  "name": "keyword.operator.tm"
+                }
+              }
+            },
+            {
+              "match": "\\b((\").*(\"))\\s*(\\=)\\s*",
+              "comment": "String object key",
+              "captures": {
+                "0": {
+                  "patterns": [
+                    {
+                      "include": "#named_value_references"
+                    }
+                  ]
+                },
+                "1": {
+                  "name": "meta.mapping.key.tm string.quoted.double.tm"
+                },
+                "2": {
+                  "name": "punctuation.definition.string.begin.tm"
+                },
+                "3": {
+                  "name": "punctuation.definition.string.end.tm"
+                },
+                "4": {
+                  "name": "keyword.operator.tm"
+                }
+              }
+            },
+            {
+              "begin": "^\\s*\\(",
+              "comment": "Computed object key (any expression between parens)",
+              "name": "meta.mapping.key.tm",
+              "beginCaptures": {
+                "0": {
+                  "name": "punctuation.section.parens.begin.tm"
+                }
+              },
+              "end": "(\\))\\s*(\\=)\\s*",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.section.parens.end.tm"
+                },
+                "2": {
+                  "name": "keyword.operator.tm"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#named_value_references"
+                },
+                {
+                  "include": "#attribute_access"
+                }
+              ]
+            },
+            {
+              "include": "#object_key_values"
+            }
+          ]
+        },
+        "object_key_values": {
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#literal_values"
+            },
+            {
+              "include": "#operators"
+            },
+            {
+              "include": "#tuple_for_expression"
+            },
+            {
+              "include": "#object_for_expression"
+            },
+            {
+              "include": "#heredoc"
+            },
+            {
+              "include": "#functions"
+            }
+          ]
+        },
+        "tuple_for_expression": {
+          "begin": "(\\[)\\s?(for)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.section.brackets.begin.tm"
+            },
+            "2": {
+              "comment": "for expression (tuple)",
+              "name": "keyword.control.tm"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.brackets.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#for_expression_body"
+            }
+          ]
+        },
+        "object_for_expression": {
+          "begin": "(\\{)\\s?(for)\\b",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.section.braces.begin.tm"
+            },
+            "2": {
+              "comment": "for expression (object)",
+              "name": "keyword.control.tm"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.braces.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\=\\>",
+              "name": "storage.type.function.tm"
+            },
+            {
+              "include": "#for_expression_body"
+            }
+          ]
+        },
+        "for_expression_body": {
+          "patterns": [
+            {
+              "match": "\\bin\\b",
+              "comment": "in keyword",
+              "name": "keyword.operator.word.tm"
+            },
+            {
+              "match": "\\bif\\b",
+              "comment": "if keyword",
+              "name": "keyword.control.conditional.tm"
+            },
+            {
+              "match": "\\:",
+              "name": "keyword.operator.tm"
+            },
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#comma"
+            },
+            {
+              "include": "#local_identifiers"
+            }
+          ]
+        },
+        "attribute_access": {
+          "begin": "\\.",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.operator.accessor.tm"
+            }
+          },
+          "end": "\\w+(\\[[0-9\\*]+\\])?",
+          "endCaptures": {
+            "0": {
+              "patterns": [
+                {
+                  "match": "\\b(?!null|false|true)[[:alpha:]][[:alnum:]_-]*\\b",
+                  "comment": "Attribute access",
+                  "name": "variable.other.member.tm"
+                }
+              ]
+            },
+            "1": {
+              "patterns": [
+                {
+                  "match": "\\d+",
+                  "comment": "Subscript",
+                  "name": "constant.numeric.integer.tm"
+                },
+                {
+                  "match": "\\*",
+                  "comment": "Attribute-only splat",
+                  "name": "keyword.operator.splat.tm"
+                }
+              ]
+            }
+          }
+        },
+        "structural_types": {
+          "patterns": [
+            {
+              "begin": "(object)(\\()(\\{)\\s*",
+              "name": "meta.function-call.tm",
+              "comment": "Object structural type",
+              "beginCaptures": {
+                "1": {
+                  "name": "support.function.builtin.tm"
+                },
+                "2": {
+                  "name": "punctuation.section.parens.begin.tm"
+                },
+                "3": {
+                  "name": "punctuation.section.braces.begin.tm"
+                }
+              },
+              "end": "(\\})(\\))",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.section.braces.end.tm"
+                },
+                "2": {
+                  "name": "punctuation.section.parens.end.tm"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comma"
+                },
+                {
+                  "match": "((?!null|false|true)[[:alpha:]][[:alnum:]_-]*)\\s*(\\=(?!\\=|\\>))\\s*",
+                  "comment": "Identifier \"=\"",
+                  "name": "variable.declaration.tm",
+                  "captures": {
+                    "1": {
+                      "name": "variable.other.readwrite.tm"
+                    },
+                    "2": {
+                      "name": "keyword.operator.assignment.tm"
+                    }
+                  }
+                },
+                {
+                  "include": "#terramate_type_keywords"
+                }
+              ]
+            },
+            {
+              "begin": "(tuple)(\\()(\\[)\\s*",
+              "name": "meta.function-call.tm",
+              "comment": "Tuple structural type",
+              "beginCaptures": {
+                "1": {
+                  "name": "support.function.builtin.tm"
+                },
+                "2": {
+                  "name": "punctuation.section.parens.begin.tm"
+                },
+                "3": {
+                  "name": "punctuation.section.brackets.begin.tm"
+                }
+              },
+              "end": "(\\])(\\))",
+              "endCaptures": {
+                "1": {
+                  "name": "punctuation.section.brackets.end.tm"
+                },
+                "2": {
+                  "name": "punctuation.section.parens.end.tm"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#comma"
+                },
+                {
+                  "include": "#terramate_type_keywords"
+                }
+              ]
+            }
+          ]
+        },
+        "functions": {
+          "begin": "(\\w+)(\\()",
+          "name": "meta.function-call.tm",
+          "comment": "Built-in function calls",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "match": "abs|ceil|floor|log|max|min|pow|signum|chomp|format|formatlist|indent|join|lower|regex|regexall|replace|split|strrev|substr|title|trimspace|upper|chunklist|coalesce|coalescelist|compact|concat|contains|distinct|element|flatten|index|keys|length|list|lookup|map|matchkeys|merge|range|reverse|setintersection|setproduct|setunion|slice|sort|transpose|values|zipmap|base64decode|base64encode|base64gzip|csvdecode|jsondecode|jsonencode|urlencode|yamldecode|yamlencode|abspath|dirname|pathexpand|basename|file|filebase64|fileexists|fileset|filebase64|templatefile|formatdate|timeadd|timestamp|base64sha256|base64sha512|bcrypt|filebase64sha256|filebase64sha512|filemd5|filemd1|filesha256|filesha512|md5|rsadecrypt|sha1|sha256|sha512|uuid|uuidv5|cidrhost|cidrnetmask|cidrsubnet|tobool|tolist|tomap|tonumber|toset|tostring",
+                  "name": "support.function.builtin.tm"
+                },
+                {
+                  "match": "\\b(?!null|false|true)[[:alpha:]][[:alnum:]_-]*\\b",
+                  "name": "variable.function.tm"
+                }
+              ]
+            },
+            "2": {
+              "name": "punctuation.section.parens.begin.tm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.parens.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#comma"
+            }
+          ]
+        },
+        "parens": {
+          "begin": "\\(",
+          "comment": "Parens - matched *after* function syntax",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.parens.begin.tm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.parens.end.tm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#local_identifiers"
+            }
+          ]
+        }
+      }
+    }
+    
