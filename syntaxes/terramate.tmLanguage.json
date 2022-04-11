@@ -103,7 +103,7 @@
       },
       "block": {
         "name": "meta.block.tm",
-        "begin": "(\\w+)(?:([\\s\\\"\\-[:word:]]*)(\\{))",
+        "begin": "(\\w+)(?:([\\s\\\"\\-[:word:].]*)(\\{))",
           "beginCaptures": {
             "1": {
               "patterns": [
