@@ -41,7 +41,7 @@ license:
 ## check if code is licensed properly
 .PHONY: license/check
 license/check:
-	$(addlicense) --check .
+	$(addlicense) --check . 2>/dev/null
 
 ## creates a new release tag
 .PHONY: release/tag
