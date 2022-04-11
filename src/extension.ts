@@ -75,9 +75,9 @@ function getServerPath(context: ExtensionContext): string {
 		return binPath;
 	}
 
-	let p = path.join(installPath(context), "terramate-lsp");
-	if (process.platform == 'win32') {
-		p += '.exe';
+	const p = path.join(installPath(context), "terramate-lsp");
+	if (process.platform === 'win32') {
+		return p + '.exe';
 	}
 	return p;
 }
