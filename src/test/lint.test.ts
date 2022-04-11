@@ -78,8 +78,8 @@ suite('Should not report diagnostics for the valid files', () => {
 async function testLint(docUri: vscode.Uri, expectedDiagnostic: vscode.Diagnostic[]) {
 	await activate(docUri);
 	assert.strictEqual(getActiveLanguageId(), "terramate");
-	const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
 
+	const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
 	assert.strictEqual(actualDiagnostics.length, expectedDiagnostic.length);
 
 	for(let i = 0; i < expectedDiagnostic.length; i++) {
