@@ -1,8 +1,10 @@
 # Set default shell to bash
 SHELL := /bin/bash -o pipefail -o errexit -o nounset
 
-addlicense=go run github.com/google/addlicense@v1.0.0 -ignore '**/*.yml' \
-	-ignore 'node_modules/**'
+addlicense=go run github.com/google/addlicense@v1.0.0 \
+	-ignore '**/*.yml' \
+	-ignore 'node_modules/**' -ignore 'testFixture/**' \
+	-ignore '.vscode-test/**'
 
 terramate_lsp_version=i4k-add-linting
 terramate_lsp_url=github.com/mineiros-io/terramate-lsp/cmd/terramate-lsp@$(terramate_lsp_version)
