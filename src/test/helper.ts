@@ -42,17 +42,33 @@ async function sleep(ms: number) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export const getFixturePath = () => {
+	return path.resolve(__dirname, '../../testFixture');
+};
+
 export const getDocPath = (p: string) => {
-	return path.resolve(__dirname, '../../testFixture', p);
+	return path.resolve(getFixturePath(), p);
 };
 export const getDocUri = (p: string) => {
 	return vscode.Uri.file(getDocPath(p));
 };
 
-export async function setTestContent(content: string): Promise<boolean> {
-	const all = new vscode.Range(
-		doc.positionAt(0),
-		doc.positionAt(doc.getText().length)
-	);
-	return editor.edit(eb => eb.replace(all, content));
+export function getActiveLanguageId(): string {
+	return vscode.window.activeTextEditor.document.languageId;
 }
+
+function begin(line: number, char: number): vscode.Position {
+	return new vscode.Position(line, char);
+}
+
+function range(start :vscode.Position, end :vscode.Position) :vscode.Range {
+	return new vscode.Range(start, end);
+}
+
+export { 
+	begin,
+	begin as end,
+	range
+};
+
+

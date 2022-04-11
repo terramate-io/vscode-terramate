@@ -108,7 +108,7 @@
             "1": {
               "patterns": [
                 {
-                  "match": "\\b(?:terramate|git|stack|globals|generate_hcl|content|config|gitbleh)\\b",
+                  "match": "\\b(?:terramate|git|stack|globals|generate_hcl|content|config)\\b",
                   "name": "storage.type.tm"
                 },
                 {
