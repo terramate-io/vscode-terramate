@@ -58,8 +58,8 @@ suite('Should not report diagnostics for the valid files', () => {
 	dirNames.forEach((dir) => {
 		const filents = fs.readdirSync(dir, {withFileTypes: true});
 		const fileNames = filents.
-		filter(filent => filent.isFile()).
-		map(filent => path.resolve(dir, filent.name));
+			filter(filent => filent.isFile()).
+			map(filent => path.resolve(dir, filent.name));
 		if (fileNames.length == 0) {
 			return;
 		}
