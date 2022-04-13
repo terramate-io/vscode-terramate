@@ -75,17 +75,17 @@ suite('Should not report diagnostics for the valid files', () => {
 });
 
 
-async function testLint(docUri: vscode.Uri, expectedDiagnostic: vscode.Diagnostic[]) {
+async function testLint(docUri: vscode.Uri, expected: vscode.Diagnostic[]) {
 	await activate(docUri);
 	assert.strictEqual(getActiveLanguageId(), "terramate");
 
-	const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
-	assert.strictEqual(actualDiagnostics.length, expectedDiagnostic.length);
+	const actual = vscode.languages.getDiagnostics(docUri);
+	assert.strictEqual(actual.length, expected.length);
 
-	for(let i = 0; i < expectedDiagnostic.length; i++) {
-		assert.deepStrictEqual(actualDiagnostics[i].range, expectedDiagnostic[i].range);
-		if (!actualDiagnostics[i].message.includes(expectedDiagnostic[i].message)) {
-			assert.fail(`diagnostic message mismatch: want=${expectedDiagnostic[i].message} but got=${actualDiagnostics[i].message}`);
+	for(let i = 0; i < expected.length; i++) {
+		assert.deepStrictEqual(actual[i].range, expected[i].range);
+		if (!actual[i].message.includes(expected[i].message)) {
+			assert.fail(`diagnostic message mismatch: want=${expected[i].message} but got=${actual[i].message}`);
 		}
 	}
 }
