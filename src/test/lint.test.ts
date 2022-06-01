@@ -31,7 +31,7 @@ suite('Should report diagnostics for the invalid fixtures', () => {
 			)]
 		},
 		{
-			name: "invalid/multiple-tm-config-git/tm1.tm",
+			name: "invalid/multiple-tm-config-git/tm2.tm",
 			diags: [new vscode.Diagnostic(
 				range(begin(2, 8), end(2, 13)),
 				'multiple terramate.config.git blocks',
