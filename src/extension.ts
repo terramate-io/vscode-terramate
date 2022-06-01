@@ -50,7 +50,7 @@ export function activate(ctx: ExtensionContext) {
 		clientOptions
 	);
 
-	console.log("terramate-lsp path: "+getServerPath(ctx));
+	console.log("terramate-ls path: "+getServerPath(ctx));
 
 	// Start the client. This will also launch the server
 	ctx.subscriptions.push(client.start());
@@ -63,10 +63,6 @@ export function deactivate(): Thenable<void> | undefined {
 	return client.stop();
 }
 
-function installPath(context: ExtensionContext): string {
-	return path.join(context.extensionPath, "bin");
-}
-
 function config(section: string, scope?: ConfigurationScope): WorkspaceConfiguration {
 	return workspace.getConfiguration(section, scope);
 }
@@ -77,11 +73,7 @@ function getServerPath(context: ExtensionContext): string {
 		return binPath;
 	}
 
-	const p = path.join(installPath(context), "terramate-lsp");
-	if (process.platform === 'win32') {
-		return p + '.exe';
-	}
-	return p;
+	return "terramate-ls";
 }
 
 function getServerArgs(context: ExtensionContext): string[] {
