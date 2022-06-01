@@ -1,8 +1,10 @@
 {
-	"name": "vscode-terramate",
+	"name": "terramate",
+	"displayName": "Mineiros Terramate",
 	"publisher": "mineiros",
 	"description": "VSCode Terramate Extension",
 	"author": "Mineiros GmbH",
+	"icon": "assets/terramate.png",
 	"license": "Apache",
 	"version": "0.0.1",
 	"repository": {
@@ -76,9 +78,9 @@
 						"scope": "window",
 						"type": "string",
 						"enum": [
-						  "off",
-						  "messages",
-						  "verbose"
+							"off",
+							"messages",
+							"verbose"
 						],
 						"default": "verbose",
 						"description": "Traces the communication between VS Code and the language server."
