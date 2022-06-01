@@ -17,5 +17,6 @@ set -o nounset
 
 export CODE_TESTS_PATH="$(pwd)/out/test"
 export CODE_TESTS_WORKSPACE="$(pwd)/testFixture"
+export PATH=$PATH:`pwd`/bin
 
 node "$(pwd)/out/test/runTest"
