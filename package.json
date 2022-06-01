@@ -1,8 +1,10 @@
 {
-	"name": "vscode-terramate",
+	"name": "terramate",
+  	"displayName": "Mineiros Terramate",
 	"publisher": "mineiros",
 	"description": "VSCode Terramate Extension",
 	"author": "Mineiros GmbH",
+	"icon": "assets/terramate.png",
 	"license": "Apache",
 	"version": "0.0.1",
 	"repository": {
