@@ -1,0 +1,7 @@
+terramate {
+    config {
+        git {
+
+        }
+    }
+}

@@ -1,8 +1,10 @@
 # Set default shell to bash
 SHELL := /bin/bash -o pipefail -o errexit -o nounset
 
-addlicense=go run github.com/google/addlicense@v1.0.0 -ignore '**/*.yml' \
-	-ignore 'node_modules/**'
+addlicense=go run github.com/google/addlicense@v1.0.0 \
+	-ignore '**/*.yml' \
+	-ignore 'node_modules/**' -ignore 'testFixture/**' \
+	-ignore '.vscode-test/**'
 
 terramate_lsp_version=latest
 terramate_lsp_url=github.com/mineiros-io/terramate-lsp/cmd/terramate-lsp@$(terramate_lsp_version)
@@ -14,7 +16,7 @@ default: help
 .PHONY: deps
 deps:
 	npm install
-	GOBIN=$(shell pwd)/bin go install "$(terramate_lsp_url)"
+	GOBIN=$(shell pwd)/bin go install -v "$(terramate_lsp_url)"
 
 ## build code
 .PHONY: build
@@ -39,7 +41,7 @@ license:
 ## check if code is licensed properly
 .PHONY: license/check
 license/check:
-	$(addlicense) --check .
+	$(addlicense) --check . 2>/dev/null
 
 ## creates a new release tag
 .PHONY: release/tag

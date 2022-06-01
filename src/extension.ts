@@ -30,7 +30,7 @@ import {
 
 let client: LanguageClient;
 
-export function activate(context: ExtensionContext) {
+export function activate(ctx: ExtensionContext) {
 	const clientOptions: LanguageClientOptions = {
 		documentSelector: [{ scheme: 'file', language: 'terramate' }],
 		synchronize: {
@@ -43,15 +43,17 @@ export function activate(context: ExtensionContext) {
 		'terramate',
 		'terramate',
 		{
-			command: getServerPath(context),
-			args: getServerArgs(context),
+			command: getServerPath(ctx),
+			args: getServerArgs(ctx),
 			options: { }
 		},
 		clientOptions
 	);
 
+	console.log("terramate-lsp path: "+getServerPath(ctx));
+
 	// Start the client. This will also launch the server
-	client.start();
+	ctx.subscriptions.push(client.start());
 }
 
 export function deactivate(): Thenable<void> | undefined {
@@ -75,7 +77,11 @@ function getServerPath(context: ExtensionContext): string {
 		return binPath;
 	}
 
-	return path.join(installPath(context), "terramate-lsp");
+	const p = path.join(installPath(context), "terramate-lsp");
+	if (process.platform === 'win32') {
+		return p + '.exe';
+	}
+	return p;
 }
 
 function getServerArgs(context: ExtensionContext): string[] {
