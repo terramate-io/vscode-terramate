@@ -8,8 +8,8 @@ extension for [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 ## Getting started
 
-* **Step 1**: If you haven't done so already, install 
-[terramate-ls](https://github.com/mineiros-io/terramate-ls).
+* **Step 1**: If you haven't done so already, install the
+[Terramate Language Server](https://github.com/mineiros-io/terramate-ls).
 
 * **Step 2**: Install the [Terramate Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=Mineiros.terramate) or search for `Terramate` in
 the VSCode Extensions Panel (**CTRL+SHIFT+X**).
