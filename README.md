@@ -11,8 +11,7 @@ provides an overview of the project and how it improves the Terraform workflow.
 
 ## Getting started
 
-* **Step 1**: If you haven't done so already, install the
-[Terramate Language Server](https://github.com/mineiros-io/terramate-ls).
+* **Step 1**: Install the [Terramate Language Server](https://github.com/mineiros-io/terramate-ls).
 
 * **Step 2**: Install the [Terramate Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=Mineiros.terramate) or search for `Terramate` in
 the VSCode Extensions Panel (**CTRL+SHIFT+X**).
