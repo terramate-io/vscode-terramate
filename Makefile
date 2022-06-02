@@ -6,8 +6,8 @@ addlicense=go run github.com/google/addlicense@v1.0.0 \
 	-ignore 'node_modules/**' -ignore 'testFixture/**' \
 	-ignore '.vscode-test/**'
 
-terramate_lsp_version=latest
-terramate_lsp_url=github.com/mineiros-io/terramate-lsp/cmd/terramate-lsp@$(terramate_lsp_version)
+terramate_ls_version=latest
+terramate_ls_url=github.com/mineiros-io/terramate-ls/cmd/terramate-ls@$(terramate_ls_version)
 
 .PHONY: default
 default: help
@@ -16,7 +16,7 @@ default: help
 .PHONY: deps
 deps:
 	npm install
-	GOBIN=$(shell pwd)/bin go install -v "$(terramate_lsp_url)"
+	GOBIN=$(shell pwd)/bin go install -v "$(terramate_ls_url)"
 
 ## build code
 .PHONY: build
@@ -72,7 +72,7 @@ license/check:
 
 ## creates a new release tag
 .PHONY: release/tag
-release/tag: VERSION?=v$(shell cat VERSION)
+release/tag: VERSION?=v$(shell npm pkg get version | tr -d '"')
 release/tag:
 	git tag -a $(VERSION) -m "Release $(VERSION)"
 	git push origin $(VERSION)

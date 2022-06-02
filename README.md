@@ -7,12 +7,11 @@ This is the official [Terramate](https://github.com/mineiros-io/terramate)
 extension for [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 If you are new to Terramate, [this article](https://blog.mineiros.io/introducing-terramate-an-orchestrator-and-code-generator-for-terraform-5e538c9ee055)
-provides an overview of the project and how it improves the terraform workflow.
+provides an overview of the project and how it improves the Terraform workflow.
 
 ## Getting started
 
-* **Step 1**: If you haven't done so already, install the
-[Terramate Language Server](https://github.com/mineiros-io/terramate-ls).
+* **Step 1**: Install the [Terramate Language Server](https://github.com/mineiros-io/terramate-ls).
 
 * **Step 2**: Install the [Terramate Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=Mineiros.terramate) or search for `Terramate` in
 the VSCode Extensions Panel (**CTRL+SHIFT+X**).
