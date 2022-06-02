@@ -6,4 +6,23 @@
 This is the official [Terramate](https://github.com/mineiros-io/terramate)
 extension for [Visual Studio Code](https://code.visualstudio.com/) editor.
 
-It's still work in progress. Stay tuned for updates.
+## Getting started
+
+* **Step 1**: If you haven't done so already, install 
+[terramate-ls](https://github.com/mineiros-io/terramate-ls).
+
+* **Step 2**: Install the [Terramate Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=Mineiros.terramate) or search for `Terramate` in
+the VSCode Extensions Panel (CTRL+SHIFT+X).
+
+* **Step 3**: To activate the extension, open any folder or VS Code workspace containing Terramate files. Any `.tm` or `.tm.hcl` file open will have the
+"Language mode" set to `Terramate`.
+
+If you have `*.hcl` associated with other extension (eg.: terraform) you can
+add a specific file association for terramate in the `Settings -> Text Editor -> Files -> Associations` 
+or directly updating/adding the `files.associations` in the `settings.json`:
+
+```
+"files.associations": {
+	"*.tm.hcl": "terramate"
+}
+```
