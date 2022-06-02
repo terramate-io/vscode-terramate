@@ -45,7 +45,7 @@ license/check:
 
 ## creates a new release tag
 .PHONY: release/tag
-release/tag: VERSION?=v$(shell cat VERSION)
+release/tag: VERSION?=v$(shell npm pkg get version | tr -d '"')
 release/tag:
 	git tag -a $(VERSION) -m "Release $(VERSION)"
 	git push origin $(VERSION)
