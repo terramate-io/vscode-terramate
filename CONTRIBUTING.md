@@ -104,6 +104,7 @@ access tokens and setup up the publisher namespace (`Mineiros` is the official
 namespace used in this repository).
 
 If you have the access tokens for them already, you can proceed to publish it.
+
 The commands `make publish-official` and `make publish-community` can be used to
 publish the extension on the marketplaces (community is the *Open VSX* marketplace).
 In order to execute the commands, you need to have the access tokens exported
