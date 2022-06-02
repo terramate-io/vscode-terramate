@@ -27,3 +27,7 @@ or directly updating/adding the `files.associations` in the `settings.json`:
 	"*.tm.hcl": "terramate"
 }
 ```
+
+## Contributing
+
+If you found any problem, please open an issue [here]()
