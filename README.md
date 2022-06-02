@@ -7,7 +7,7 @@ This is the official [Terramate](https://github.com/mineiros-io/terramate)
 extension for [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 If you are new to Terramate, [this article](https://blog.mineiros.io/introducing-terramate-an-orchestrator-and-code-generator-for-terraform-5e538c9ee055)
-provides an overview of the project and how it improves the terraform workflow.
+provides an overview of the project and how it improves the Terraform workflow.
 
 ## Getting started
 
