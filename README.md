@@ -33,4 +33,9 @@ or directly updating/adding the `files.associations` in the `settings.json`:
 
 ## Contributing
 
-If you found any problem, please open an issue [here]()
+In order to contribute to this project, first have a look in the
+ [Terramate Contributing Guide](https://github.com/mineiros-io/terramate/blob/main/CONTRIBUTING.md) as the same workflow applies here.
+
+ For a technical contributing guide specific to this extension, check the
+ [CONTRIBUTING.md](https://github.com/mineiros-io/vscode-terramate/blob/main/CONTRIBUTING.md) documentation.
+ 
