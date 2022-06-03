@@ -29,3 +29,12 @@ or directly updating/adding the `files.associations` in the `settings.json`:
 	"*.tm.hcl": "terramate"
 }
 ```
+
+## Contributing
+
+In order to contribute to this project, first have a look in the
+ [Terramate Contributing Guide](https://github.com/mineiros-io/terramate/blob/main/CONTRIBUTING.md) as the same workflow applies here.
+
+ For a technical contributing guide specific to this extension, check the
+ [CONTRIBUTING.md](https://github.com/mineiros-io/vscode-terramate/blob/main/CONTRIBUTING.md) documentation.
+ 

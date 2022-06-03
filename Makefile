@@ -33,6 +33,33 @@ lint: deps
 test: build
 	npm run test
 
+## package the extension
+.PHONY: package
+package:
+	vsce package
+
+## publish the extension in the official marketplace
+.PHONY: publish-official
+publish-official: check-vscode-access-token
+	npx vsce publish -p $(VSCODE_ACCESS_TOKEN)
+
+## publish the extension in the community marketplace
+.PHONY: publish-community
+publish-community: check-open-vsx-access-token
+	npx ovsx publish -p $(OPEN_VSX_ACCESS_TOKEN)
+
+.PHONY: check-vscode-access-token
+check-vscode-access-token:
+ifndef VSCODE_ACCESS_TOKEN
+	$(error VSCODE_ACCESS_TOKEN environment variable is not set)
+endif
+
+.PHONY: check-open-vsx-access-token
+check-open-vsx-access-token:
+ifndef OPEN_VSX_ACCESS_TOKEN
+	$(error OPEN_VSX_ACCESS_TOKEN environment variable is not set)
+endif
+
 ## add license to code
 .PHONY: license
 license:
