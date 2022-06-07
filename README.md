@@ -19,7 +19,7 @@ the VSCode Extensions Panel (**CTRL+SHIFT+X**).
 If you have installed the `terramate-ls` in an arbitrary path (not in `PATH` env)
 you can configure where the extension should look up for the binary using the
 setting `terramate.languageServer.binPath` in 
-[settings.xml](https://code.visualstudio.com/docs/getstarted/settings).
+[settings.json](https://code.visualstudio.com/docs/getstarted/settings).
 
 * **Step 3**: To activate the extension, open any folder or VS Code workspace 
 containing Terramate files. Any `.tm` or `.tm.hcl` file open will have the
