@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as util from 'util';
 import * as path from 'path';
 import { runTests } from '@vscode/test-electron';
 import * as semver from 'semver';
@@ -30,12 +31,15 @@ async function main() {
 
 		let version = process.env['CODE_TESTS_VERSION'];
 		if (version == '') {
-			version = semver.minVersion(process.env['CODE_TESTS_VERSION_CONSTRAINT']);
+			const versionObj = semver.minVersion(
+				process.env['CODE_TESTS_VERSION_CONSTRAINT']
+			);
+			version = versionObj.raw;
 		}
 
 		// Download VS Code, unzip it and run the integration test
 		await runTests({
-			version: version,
+			version: version.trim(),
 			extensionDevelopmentPath, 
 			extensionTestsPath,
 		});
