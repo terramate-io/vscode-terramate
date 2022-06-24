@@ -25,4 +25,6 @@ if [ $# -eq 1 ]; then
     export CODE_TESTS_VERSION="$1"
 fi
 
+echo "VERSION=$CODE_TESTS_VERSION"
+
 node "$(pwd)/out/test/runTest"
