@@ -17,7 +17,7 @@ set -o nounset
 
 export CODE_TESTS_PATH="$(pwd)/out/test"
 export CODE_TESTS_WORKSPACE="$(pwd)/testFixture"
-export CODE_TESTS_VERSION_CONSTRAINT=$(npm pkg get engines.vscode | tr -d '"')
+export CODE_TESTS_VERSION_CONSTRAINT="$(npm pkg get engines.vscode | tr -d '"')"
 export CODE_TESTS_VERSION=""
 export PATH=$PATH:`pwd`/bin
 
