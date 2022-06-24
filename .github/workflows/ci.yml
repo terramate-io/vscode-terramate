@@ -39,7 +39,7 @@ jobs:
           go-version: "1.17"
       - uses: actions/setup-node@v2
         with:
-          node-version: ^14
+          node-version: ^15
       - name: Run tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
