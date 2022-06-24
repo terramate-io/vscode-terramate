@@ -22,6 +22,7 @@ jobs:
   build:
     strategy:
       matrix:
+        version: ['1.62.0', '1.63.0', '1.68.0', 'stable', 'insiders']
         os: [macos-10.15, ubuntu-20.04, windows-2019]
     runs-on: ${{ matrix.os }}
     steps:
@@ -35,4 +36,4 @@ jobs:
       - name: Run tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
-          run: make test
+          run: make test VERSION=${{ matrix.version }}

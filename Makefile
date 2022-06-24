@@ -28,10 +28,16 @@ build: deps
 lint: deps
 	npm run lint
 
-## test code
+## test extension
 .PHONY: test
+test: VERSION?=stable
 test: build
-	npm run test
+	sh ./scripts/e2e.sh $(VERSION)
+
+## test extension on vscode minimal supported version.
+.PHONY: test-min-version
+test-min-version: build
+	sh ./scripts/e2e.sh
 
 ## package the extension
 .PHONY: package
