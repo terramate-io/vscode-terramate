@@ -26,5 +26,6 @@ if [ $# -eq 1 ]; then
 fi
 
 echo "VERSION=$CODE_TESTS_VERSION"
+echo "CONSTRAINT=$CODE_TESTS_VERSION_CONSTRAINT"
 
 node "$(pwd)/out/test/runTest"
