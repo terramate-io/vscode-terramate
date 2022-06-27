@@ -12,7 +12,7 @@ jobs:
           go-version: "1.17"
       - uses: actions/setup-node@v2
         with:
-          node-version: ^14
+          node-version: ^18
 
       - name: linting code
         run: make lint
@@ -22,6 +22,14 @@ jobs:
   build:
     strategy:
       matrix:
+        version: [
+          '', # uses the minimum supported version defined in package.json
+          '1.62.0',
+          '1.63.0',
+          '1.68.0',
+          'stable',
+          'insiders'
+        ]
         os: [macos-10.15, ubuntu-20.04, windows-2019]
     runs-on: ${{ matrix.os }}
     steps:
@@ -31,8 +39,8 @@ jobs:
           go-version: "1.17"
       - uses: actions/setup-node@v2
         with:
-          node-version: ^14
+          node-version: ^18
       - name: Run tests
         uses: GabrielBB/xvfb-action@v1.0
         with:
-          run: make test
+          run: make test VERSION=${{ matrix.version }}
