@@ -111,11 +111,5 @@
 		"typescript": "^4.6.2",
 		"vsce": "^2.9.1",
 		"semver": "^7.3.7"
-	},
-	"__metadata": {
-		"id": "2acd93e8-6abe-4962-a7dc-795831b3f850",
-		"publisherDisplayName": "Mineiros",
-		"publisherId": "06229838-2113-4024-a01d-88c30a93ef73",
-		"isPreReleaseVersion": false
 	}
 }
