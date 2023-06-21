@@ -1,7 +1,7 @@
 # Contributing to Terramate VSCode Extension
 
-If you haven't done that yet, please read the 
-[Terramate Contributing Guide](https://github.com/mineiros-io/terramate/blob/main/CONTRIBUTING.md) as the same process applies to this repository.
+If you haven't done that yet, please read the
+[Terramate Contributing Guide](https://github.com/terramate-io/terramate/blob/main/CONTRIBUTING.md) as the same process applies to this repository.
 
 ## Development
 
@@ -23,7 +23,7 @@ $ make
   help                           Display help for all targets
 ```
 
-The `make deps` will install all dependencies needed for the `build`, `test`, 
+The `make deps` will install all dependencies needed for the `build`, `test`,
 `package` and `publish-*` tasks.
 
 ### Running the extension locally
@@ -74,7 +74,7 @@ build and install the [terramate language server](https://github.com/mineiros-io
 Before submitting contributions, make sure the `make test` command shows that
 all tests passed.
 
-If everything is alright, then follow the process described in the [Terramate Contributing Guide](https://github.com/mineiros-io/terramate/blob/main/CONTRIBUTING.md)
+If everything is alright, then follow the process described in the [Terramate Contributing Guide](https://github.com/terramate-io/terramate/blob/main/CONTRIBUTING.md)
 for this repository.
 
 ### Packaging
@@ -86,7 +86,7 @@ make package
 ```
 
 This will generate a file like `terramate-<version>.vsix`. This file alone can
-be used to install the extension throught the `Install from VSIX...` button in 
+be used to install the extension throught the `Install from VSIX...` button in
 the *Extensions* panel in VSCode.
 
 If the extension is working as expected, it can be published in the supported
@@ -96,11 +96,11 @@ marketplaces.
 
 At the moment there are two mainstream extension marketplaces for VSCode, the
 official [Visual Studio Marketplace](https://marketplace.visualstudio.com/vscode)
-from Microsoft and the [Open VSX Registry](https://open-vsx.org/) from the 
+from Microsoft and the [Open VSX Registry](https://open-vsx.org/) from the
 Eclipse Foundation, and the Terramate extension is published in both of them.
 
 Before publishing the extension, someone need to setup an account, retrieve the
-access tokens and setup up the publisher namespace (`Mineiros` is the official 
+access tokens and setup up the publisher namespace (`Mineiros` is the official
 namespace used in this repository).
 
 If you have the access tokens for them already, you can proceed to publish it.
@@ -109,11 +109,11 @@ The commands `make publish-official` and `make publish-community` can be used to
 publish the extension on the marketplaces (community is the *Open VSX* marketplace).
 In order to execute the commands, you need to have the access tokens exported
 in the environment variables `VSCODE_ACCESS_TOKEN` and `OPEN_VSX_ACCESS_TOKEN`,
-for the official vscode marketplace and the community (open-vsx.org), 
+for the official vscode marketplace and the community (open-vsx.org),
 respectively.
 
 If you don't have the access tokens yet or it's the first time you are going to
-publish the extension, you can find below the links for each marketplace with 
+publish the extension, you can find below the links for each marketplace with
 steps for setting up the namespaces:
 
 - [Setup a VSCode Marketplace namespace](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token)
