@@ -49,25 +49,25 @@ dependencies, testing, linting, build output, etc.
 
 The important parts are:
 
-- The file [package.json](https://github.com/mineiros-io/vscode-terramate/blob/main/package.json) contains a lot of important configurations.
+- The file [package.json](https://github.com/terramate-io/vscode-terramate/blob/main/package.json) contains a lot of important configurations.
 
-- The [src](https://github.com/mineiros-io/vscode-terramate/tree/main/src) directory
+- The [src](https://github.com/terramate-io/vscode-terramate/tree/main/src) directory
 contains the extension source code and the file `src/extension.ts` is the
 extension entrypoint.
 
-- The [src/test](https://github.com/mineiros-io/vscode-terramate/tree/main/src/test)
+- The [src/test](https://github.com/terramate-io/vscode-terramate/tree/main/src/test)
 contains the e2e test infrastructure. In this directory, all the `*.test.js` files
 are actual test suites. All the rest are testing setup.
 
-- The [testFixture](https://github.com/mineiros-io/vscode-terramate/tree/main/testFixture)
+- The [testFixture](https://github.com/terramate-io/vscode-terramate/tree/main/testFixture)
 directory contains fixtures used in tests.
 
-- The [syntaxes](https://github.com/mineiros-io/vscode-terramate/tree/main/syntaxes)
+- The [syntaxes](https://github.com/terramate-io/vscode-terramate/tree/main/syntaxes)
 directory contains the [TexMate Grammar Definition](https://macromates.com/manual/en/language_grammars) for the VSCode Intellisense integration.
 
 The `make deps` command will download all the vscode and typescript libraries,
 compilers and tools inside the "gitignored" `node_modules` directory, but also
-build and install the [terramate language server](https://github.com/mineiros-io/terramate-ls) inside the `bin` directory.
+build and install the [terramate language server](https://github.com/terramate-io/terramate-ls) inside the `bin` directory.
 
 ### Submitting changes
 

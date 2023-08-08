@@ -1,6 +1,6 @@
 # Terramate VSCode Extension
 
-![CI Status](https://github.com/mineiros-io/vscode-terramate/actions/workflows/ci.yml/badge.svg)
+![CI Status](https://github.com/terramate-io/vscode-terramate/actions/workflows/ci.yml/badge.svg)
 [![Join Discord](https://img.shields.io/discord/1088753599951151154?label=Discord&logo=discord&logoColor=white)](https://terramate.io/discord)
 
 This is the official [Terramate](https://github.com/terramate-io/terramate)
@@ -11,7 +11,7 @@ provides an overview of the project and how it improves the Terraform workflow.
 
 ## Getting started
 
-* **Step 1**: Install the [Terramate Language Server](https://github.com/mineiros-io/terramate-ls).
+* **Step 1**: Install the [Terramate Language Server](https://terramate.io/docs/cli/installation).
 
 * **Step 2**: Install the [Terramate Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=Mineiros.terramate) or search for `Terramate` in
 the VSCode Extensions Panel (**CTRL+SHIFT+X**).
@@ -41,5 +41,5 @@ In order to contribute to this project, first have a look in the
  [Terramate Contributing Guide](https://github.com/terramate-io/terramate/blob/main/CONTRIBUTING.md) as the same workflow applies here.
 
  For a technical contributing guide specific to this extension, check the
- [CONTRIBUTING.md](https://github.com/mineiros-io/vscode-terramate/blob/main/CONTRIBUTING.md) documentation.
+ [CONTRIBUTING.md](https://github.com/terramate-io/vscode-terramate/blob/main/CONTRIBUTING.md) documentation.
 

@@ -7,7 +7,7 @@ addlicense=go run github.com/google/addlicense@v1.0.0 \
 	-ignore '.vscode-test/**'
 
 terramate_ls_version=latest
-terramate_ls_url=github.com/mineiros-io/terramate-ls/cmd/terramate-ls@$(terramate_ls_version)
+terramate_ls_url=github.com/terramate-io/terramate/cmd/...@$(terramate_ls_version)
 
 .PHONY: default
 default: help
@@ -69,7 +69,7 @@ endif
 ## add license to code
 .PHONY: license
 license:
-	$(addlicense) -c "Mineiros GmbH" .
+	$(addlicense) -c "Terramate GmbH" .
 
 ## check if code is licensed properly
 .PHONY: license/check
