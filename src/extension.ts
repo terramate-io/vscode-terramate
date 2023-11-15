@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as path from 'path';
-
 import { 
 	workspace, 
 	ExtensionContext, 

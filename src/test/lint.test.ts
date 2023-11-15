@@ -33,8 +33,8 @@ suite('Should report diagnostics for the invalid fixtures', () => {
 		{
 			name: "invalid/multiple-tm-config-git/tm2.tm",
 			diags: [new vscode.Diagnostic(
-				range(begin(2, 8), end(2, 13)),
-				'multiple terramate.config.git blocks',
+				range(begin(3, 12), end(3, 26)),
+				'terramate schema error: attribute "default_branch" redeclared in file',
 				vscode.DiagnosticSeverity.Error
 			)]
 		},
@@ -42,8 +42,9 @@ suite('Should report diagnostics for the invalid fixtures', () => {
 
 	testcases.forEach((tc) => {
 		const testFixture = getDocPath(tc.name);
-		test('lint file: '+testFixture, async () => {
-			await testLint(vscode.Uri.file(testFixture), tc.diags);
+		const file = vscode.Uri.file(testFixture);
+		test('lint file: '+file, async () => {
+			await testLint(file, tc.diags);
 		});
 	});
 });
@@ -59,17 +60,17 @@ suite('Should not report diagnostics for the valid files', () => {
 		const filents = fs.readdirSync(dir, {withFileTypes: true});
 		const fileNames = filents.
 			filter(filent => filent.isFile()).
-			map(filent => path.resolve(dir, filent.name));
+			map(filent => path.resolve(dir, filent.name)).
+			sort();
 		if (fileNames.length == 0) {
 			return;
 		}
 
 		// we chose one file to report diagnostics but other files in the
 		// directory will be also checked.
-		const file = fileNames[0]; 
-
+		const file = vscode.Uri.file(path.resolve(testDir, fileNames[0]));
 		test('test file: '+file, async () => {
-			await testLint(vscode.Uri.file(path.resolve(testDir, file)), []);
+			await testLint(file, []);
 		});
 	});	
 });
