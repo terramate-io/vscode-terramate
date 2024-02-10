@@ -6,7 +6,7 @@ addlicense=go run github.com/google/addlicense@v1.0.0 \
 	-ignore 'node_modules/**' -ignore 'testFixture/**' \
 	-ignore '.vscode-test/**'
 
-terramate_ls_version=latest
+terramate_ls_version=v0.8.4
 terramate_ls_url=github.com/terramate-io/terramate/cmd/...@$(terramate_ls_version)
 
 .PHONY: default
