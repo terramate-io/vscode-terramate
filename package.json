@@ -1,7 +1,7 @@
 {
 	"name": "terramate",
 	"displayName": "Terramate",
-	"publisher": "mineiros",
+	"publisher": "terramate",
 	"description": "VSCode Terramate Extension",
 	"author": "Terramate GmbH",
 	"icon": "assets/terramate.png",
@@ -24,7 +24,7 @@
 		"hcl"
 	],
 	"engines": {
-		"vscode": "^1.52.0"
+		"vscode": "^1.85.0"
 	},
 	"activationEvents": [
 		"onLanguage:terramate"
@@ -36,7 +36,8 @@
 				"id": "terramate",
 				"extensions": [
 					".tm",
-					".tm.hcl"
+					".tm.hcl",
+					".tmgen"
 				],
 				"aliases": [
 					"Terramate",
@@ -58,15 +59,39 @@
 				"title": "Language Server",
 				"order": 1,
 				"properties": {
-					"terramate.languageServer.binPath": {
+					"terramate.languageServer.enabled": {
+						"order": 0,
+						"scope": "resource",
+						"type": "boolean",
+						"default": true,
+						"description": "Enable/disable the Terramate language server"
+					},
+					"terramate.languageServer.type": {
 						"order": 1,
 						"scope": "resource",
 						"type": "string",
+						"enum": [
+							"auto",
+							"terramate-ls",
+							"terramate-pro"
+						],
+						"enumDescriptions": [
+							"Auto-detect available language server (tries terramate-pro first, falls back to terramate-ls)",
+							"Use open-source terramate-ls (limited bundle support)",
+							"Use terramate-pro (full bundle support for paid users)"
+						],
+						"default": "auto",
+						"description": "Which language server to use. If binPath is set, it takes precedence over auto-detection."
+					},
+					"terramate.languageServer.binPath": {
+						"order": 2,
+						"scope": "resource",
+						"type": "string",
 						"default": "",
-						"description": "Path to language server binary (optional)"
+						"description": "Path to language server binary. If set, uses this instead of searching PATH. Works with any type setting."
 					},
 					"terramate.languageServer.args": {
-						"order": 2,
+						"order": 3,
 						"scope": "resource",
 						"type": "array",
 						"default": [
@@ -75,6 +100,7 @@
 						"description": "Arguments to pass to language server binary"
 					},
 					"terramate.languageServer.trace.server": {
+						"order": 4,
 						"scope": "window",
 						"type": "string",
 						"enum": [
@@ -82,7 +108,7 @@
 							"messages",
 							"verbose"
 						],
-						"default": "verbose",
+						"default": "off",
 						"description": "Traces the communication between VS Code and the language server."
 					}
 				}
@@ -96,20 +122,22 @@
 		"lint": "eslint ./src --ext .ts,.tsx"
 	},
 	"dependencies": {
-		"vscode-languageclient": "^7.0.0"
+		"vscode-languageclient": "^9.0.1"
 	},
 	"devDependencies": {
-		"@types/mocha": "^9.1.0",
-		"@types/node": "^14.17.0",
-		"@types/vscode": "^1.52.0",
-		"@typescript-eslint/eslint-plugin": "^5.18.0",
-		"@typescript-eslint/parser": "^5.18.0",
-		"@vscode/test-electron": "^2.1.2",
-		"eslint": "^8.12.0",
-		"mocha": "^9.2.1",
-		"ovsx": "^0.5.0",
-		"typescript": "^4.6.2",
-		"vsce": "^2.9.1",
-		"semver": "^7.3.7"
+		"@eslint/js": "^9.38.0",
+		"@types/mocha": "^10.0.10",
+		"@types/node": "^24.9.1",
+		"@types/vscode": "^1.105.0",
+		"@typescript-eslint/eslint-plugin": "^8.46.2",
+		"@typescript-eslint/parser": "^8.46.2",
+		"@vscode/test-electron": "^2.5.2",
+		"@vscode/vsce": "^3.6.2",
+		"eslint": "^9.38.0",
+		"glob": "^11.0.3",
+		"mocha": "^11.7.4",
+		"ovsx": "^0.10.6",
+		"semver": "^7.7.3",
+		"typescript": "^5.9.3"
 	}
 }
