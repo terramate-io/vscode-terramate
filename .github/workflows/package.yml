@@ -1,0 +1,82 @@
+name: Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  package:
+    name: Create VSIX Package
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Compile TypeScript
+        run: pnpm compile
+
+      - name: Lint code
+        run: pnpm lint
+
+      - name: Create VSIX package
+        run: pnpm exec vsce package --no-dependencies
+
+      - name: Get package info
+        id: package
+        run: |
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+          echo "name=terramate-$(node -p "require('./package.json').version").vsix" >> $GITHUB_OUTPUT
+          echo "size=$(du -h *.vsix | cut -f1)" >> $GITHUB_OUTPUT
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terramate-vsix-${{ github.sha }}
+          path: '*.vsix'
+          retention-days: 30
+
+      - name: Package Summary
+        run: |
+          echo "## 📦 Package Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**File**: ${{ steps.package.outputs.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Size**: ${{ steps.package.outputs.size }}" >> $GITHUB_STEP_SUMMARY
+          echo "**SHA**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download from: Artifacts section above" >> $GITHUB_STEP_SUMMARY
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📦 VSIX Package Ready for Testing\n\n**Version**: ${{ steps.package.outputs.version }}\n**Size**: ${{ steps.package.outputs.size }}\n\nDownload the VSIX from the [artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) to test this PR locally:\n\n\`\`\`bash\ncode --install-extension ${{ steps.package.outputs.name }}\n\`\`\``
+            })
+

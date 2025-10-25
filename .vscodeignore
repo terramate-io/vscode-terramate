@@ -1,3 +1,42 @@
+# Source files
 **/*.ts
 **/tsconfig.json
-scripts/*
+src/**
+
+# Build and test
+.vscode-test/**
+.vscode/**
+out/test/**
+scripts/**
+test-extension.sh
+test-output.log
+tsconfig.tsbuildinfo
+
+# Dependencies and lock files
+node_modules/**
+pnpm-lock.yaml
+
+# Git and CI
+.git/**
+.github/**
+.gitignore
+
+# Build tools
+Makefile
+eslint.config.js
+.eslintrc.js
+
+# Documentation (keep only README)
+*.md
+!README.md
+
+# Test fixtures
+testFixture/**
+
+# Cloned repos and binaries
+terramate/**
+terramate-pro-dev/**
+bin/**
+
+# Package files
+*.vsix

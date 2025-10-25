@@ -25,6 +25,12 @@ export function run(): Promise<void> {
 		color: true
 	});
 	mocha.timeout(100000);
+	
+	// Support --grep filtering from environment
+	const grepPattern = process.env.CODE_TESTS_MOCHA_ARGS;
+	if (grepPattern) {
+		mocha.grep(grepPattern);
+	}
 
 	const testsRoot = __dirname;
 

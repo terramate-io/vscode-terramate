@@ -66,23 +66,6 @@
 						"default": true,
 						"description": "Enable/disable the Terramate language server"
 					},
-					"terramate.languageServer.type": {
-						"order": 1,
-						"scope": "resource",
-						"type": "string",
-						"enum": [
-							"auto",
-							"terramate-ls",
-							"terramate-pro"
-						],
-						"enumDescriptions": [
-							"Auto-detect available language server (tries terramate-pro first, falls back to terramate-ls)",
-							"Use open-source terramate-ls (limited bundle support)",
-							"Use terramate-pro (full bundle support for paid users)"
-						],
-						"default": "auto",
-						"description": "Which language server to use. If binPath is set, it takes precedence over auto-detection."
-					},
 					"terramate.languageServer.binPath": {
 						"order": 2,
 						"scope": "resource",
@@ -119,7 +102,11 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -b",
 		"watch": "tsc -b -w",
-		"lint": "eslint ./src --ext .ts,.tsx"
+		"lint": "eslint ./src --ext .ts,.tsx",
+		"test": "sh ./scripts/e2e.sh",
+		"test:syntax": "sh ./scripts/e2e.sh --grep 'Syntax Recognition'",
+		"test:core": "sh ./scripts/e2e.sh --grep 'Core LS'",
+		"test:pro": "sh ./scripts/e2e.sh --grep 'Pro Features'"
 	},
 	"dependencies": {
 		"vscode-languageclient": "^9.0.1"
@@ -128,7 +115,7 @@
 		"@eslint/js": "^9.38.0",
 		"@types/mocha": "^10.0.10",
 		"@types/node": "^24.9.1",
-		"@types/vscode": "^1.105.0",
+		"@types/vscode": "1.85.0",
 		"@typescript-eslint/eslint-plugin": "^8.46.2",
 		"@typescript-eslint/parser": "^8.46.2",
 		"@vscode/test-electron": "^2.5.2",

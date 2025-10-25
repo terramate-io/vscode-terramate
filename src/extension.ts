@@ -25,6 +25,7 @@ import {
 import {
 	LanguageClient,
 	LanguageClientOptions,
+	Trace,
 } from 'vscode-languageclient/node';
 
 import { execSync } from 'child_process';
@@ -42,18 +43,19 @@ export function activate(ctx: ExtensionContext) {
 	const serverInfo = getServerInfo(ctx);
 	if (!serverInfo) {
 		window.showWarningMessage(
-			'Terramate language server not found. Please install terramate-ls or terramate-pro.',
+			'Terramate language server (terramate-ls) not found. Please install it.',
 			'Install Guide'
 		).then(selection => {
 			if (selection === 'Install Guide') {
 				window.showInformationMessage(
-					'Install terramate-ls (open source) or terramate-pro for full bundle support. ' +
-					'Visit https://terramate.io/docs/cli/installation for instructions.'
+					'Install terramate-ls from https://terramate.io/docs/cli/installation'
 				);
 			}
 		});
 		return;
 	}
+
+	const trace = config("terramate").get<string>("languageServer.trace.server", "off");
 
 	const clientOptions: LanguageClientOptions = {
 		documentSelector: [{ scheme: 'file', language: 'terramate' }],
@@ -62,6 +64,11 @@ export function activate(ctx: ExtensionContext) {
 			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
 		}
 	};
+
+	// Apply trace setting if configured
+	if (trace === "messages" || trace === "verbose") {
+		clientOptions.traceOutputChannel = window.createOutputChannel("Terramate Language Server Trace");
+	}
 
 	client = new LanguageClient(
 		'terramate',
@@ -76,14 +83,16 @@ export function activate(ctx: ExtensionContext) {
 
 	console.log(`Starting ${serverInfo.name} at: ${serverInfo.path}`);
 
+	// Set trace level
+	if (trace === "messages") {
+		client.setTrace(Trace.Messages);
+	} else if (trace === "verbose") {
+		client.setTrace(Trace.Verbose);
+	}
+
 	// Start the client. This will also launch the server
 	client.start().then(() => {
 		console.log(`${serverInfo.name} started successfully`);
-		if (serverInfo.type === 'terramate-pro') {
-			console.log("Using Terramate Pro - full bundle support enabled");
-		} else if (serverInfo.type === 'terramate-ls') {
-			console.log("Using terramate-ls (open source) - limited bundle support");
-		}
 	}).catch((err) => {
 		console.error(`Failed to start ${serverInfo.name}:`, err);
 		window.showErrorMessage(`Failed to start ${serverInfo.name}: ${err.message}`);
@@ -105,7 +114,6 @@ interface ServerInfo {
 	name: string;
 	path: string;
 	args: string[];
-	type: 'terramate-ls' | 'terramate-pro' | 'custom';
 }
 
 function config(section: string, scope?: ConfigurationScope): WorkspaceConfiguration {
@@ -113,11 +121,10 @@ function config(section: string, scope?: ConfigurationScope): WorkspaceConfigura
 }
 
 function getServerInfo(context: ExtensionContext): ServerInfo | null {
-	const serverType = config("terramate").get<string>("languageServer.type", "auto");
 	const customPath = config("terramate").get<string>("languageServer.binPath", "");
 	const args = config("terramate").get<string[]>("languageServer.args", ["-mode=stdio"]);
 
-	// If binPath is set, use it regardless of type
+	// If binPath is set, use it
 	if (customPath) {
 		if (!existsSync(customPath)) {
 			console.error(`Language server binary not found: ${customPath}`);
@@ -125,107 +132,27 @@ function getServerInfo(context: ExtensionContext): ServerInfo | null {
 			return null;
 		}
 		
-		// Detect type from binary name if type is auto
-		let detectedType: 'terramate-ls' | 'terramate-pro' | 'custom' = 'custom';
-		let serverArgs = args;
-		
-		if (customPath.includes('terramate-pro')) {
-			detectedType = 'terramate-pro';
-			serverArgs = [...args, "lsp"];
-			console.log(`Using custom path for terramate-pro: ${customPath}`);
-		} else if (customPath.includes('terramate-ls')) {
-			detectedType = 'terramate-ls';
-			console.log(`Using custom path for terramate-ls: ${customPath}`);
-		} else {
-			console.log(`Using custom language server: ${customPath}`);
-		}
+		console.log(`Using custom path for terramate-ls: ${customPath}`);
 		
 		return {
-			name: detectedType === 'terramate-pro' ? "Terramate Pro Language Server" :
-			      detectedType === 'terramate-ls' ? "Terramate Language Server (Open Source)" :
-			      "Terramate Language Server (Custom)",
+			name: "Terramate Language Server",
 			path: customPath,
-			args: serverArgs,
-			type: detectedType
+			args: args
 		};
 	}
 
-	// No custom path - search in PATH based on type
-	// Handle explicit terramate-pro
-	if (serverType === "terramate-pro") {
-		const proPath = findBinary("terramate-pro");
-		if (!proPath) {
-			console.error("terramate-pro not found in PATH");
-			window.showWarningMessage(
-				'terramate-pro not found in PATH. Install it or set binPath in settings.',
-				'Settings'
-			).then(selection => {
-				if (selection === 'Settings') {
-					window.showInformationMessage('Set "terramate.languageServer.binPath" to the path of your terramate-pro binary.');
-				}
-			});
-			return null;
-		}
+	// No custom path - search for terramate-ls in PATH
+	const lsPath = findBinary("terramate-ls");
+	if (lsPath) {
+		console.log("Auto-detected terramate-ls in PATH");
 		return {
-			name: "Terramate Pro Language Server",
-			path: proPath,
-			args: [...args, "lsp"],
-			type: 'terramate-pro'
-		};
-	}
-
-	// Handle explicit terramate-ls
-	if (serverType === "terramate-ls") {
-		const lsPath = findBinary("terramate-ls");
-		if (!lsPath) {
-			console.error("terramate-ls not found in PATH");
-			window.showWarningMessage(
-				'terramate-ls not found in PATH. Install it or set binPath in settings.',
-				'Install Guide'
-			).then(selection => {
-				if (selection === 'Install Guide') {
-					window.showInformationMessage('Visit https://terramate.io/docs/cli/installation for installation instructions.');
-				}
-			});
-			return null;
-		}
-		return {
-			name: "Terramate Language Server (Open Source)",
+			name: "Terramate Language Server",
 			path: lsPath,
-			args: args,
-			type: 'terramate-ls'
+			args: args
 		};
 	}
 
-	// Auto-detect: try terramate-pro first, then terramate-ls
-	if (serverType === "auto") {
-		const proPath = findBinary("terramate-pro");
-		if (proPath) {
-			console.log("Auto-detected terramate-pro");
-			return {
-				name: "Terramate Pro Language Server",
-				path: proPath,
-				args: [...args, "lsp"],
-				type: 'terramate-pro'
-			};
-		}
-
-		const lsPath = findBinary("terramate-ls");
-		if (lsPath) {
-			console.log("Auto-detected terramate-ls");
-			return {
-				name: "Terramate Language Server (Open Source)",
-				path: lsPath,
-				args: args,
-				type: 'terramate-ls'
-			};
-		}
-
-		console.error("No language server found in PATH (tried terramate-pro and terramate-ls)");
-		return null;
-	}
-
-	console.error(`Unknown language server type: ${serverType}`);
+	console.error("terramate-ls not found in PATH");
 	return null;
 }
 
