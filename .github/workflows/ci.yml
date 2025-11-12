@@ -15,21 +15,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Setup asdf
+        uses: asdf-vm/actions/setup@v4
+
+      - name: Install asdf plugins and tools
+        run: |
+          asdf plugin add nodejs || true
+          asdf plugin add golang || true
+          asdf install
+
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-
-      - name: Setup Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: '1.21'
+        run: npm install -g pnpm@10
 
       - name: Install dependencies
         run: pnpm install
@@ -64,27 +60,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      # Use asdf on Linux/macOS
+      - name: Setup asdf (Linux/macOS)
+        if: runner.os != 'Windows'
+        uses: asdf-vm/actions/setup@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Install tools via asdf (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          asdf plugin add nodejs || true
+          asdf plugin add golang || true
+          asdf install
+
+      # Use standard actions on Windows
+      - name: Setup Node.js (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
-          cache: 'pnpm'
 
-      - name: Setup Go
+      - name: Setup Go (Windows)
+        if: runner.os == 'Windows'
         uses: actions/setup-go@v6
         with:
-          go-version: '1.21'
+          go-version: '1.25'
+
+      - name: Setup pnpm
+        run: npm install -g pnpm@10
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Install terramate-ls
+        shell: bash
         run: |
+          mkdir -p bin
           GOBIN=$(pwd)/bin go install github.com/terramate-io/terramate/cmd/terramate-ls@latest
           echo "$(pwd)/bin" >> $GITHUB_PATH
 
@@ -101,5 +111,5 @@ jobs:
 
       - name: Run E2E tests (Windows)
         if: runner.os == 'Windows'
+        shell: bash
         run: sh ./scripts/e2e.sh ${{ matrix.vscode-version }} --grep "Syntax Recognition|Core LS"
-

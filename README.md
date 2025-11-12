@@ -12,7 +12,7 @@ If you are new to Terramate, [this article](https://terramate.io/rethinking-iac/
 ### Step 1: Install the Terramate Language Server
 
 Install `terramate-ls`:
-- **[Official installation guide](https://terramate.io/docs/cli/installation)**
+- **[Installation guide](https://terramate.io/docs/cli/installation)**
 - Or via Homebrew: `brew install terramate-io/tap/terramate`
 
 The extension automatically detects `terramate-ls` in your PATH.
@@ -23,7 +23,7 @@ Install the [Terramate Extension for VSCode](https://marketplace.visualstudio.co
 
 ### Step 3: Start Coding
 
-Open any folder containing Terramate files. Files with `.tm` or `.tm.hcl` extensions will automatically activate the extension with full syntax highlighting and language server features.
+Open any folder containing Terramate files. Files with `.tm`, `.tm.hcl`, or `.tmgen` extensions will automatically activate the extension with full syntax highlighting and language server features.
 
 ## Features
 

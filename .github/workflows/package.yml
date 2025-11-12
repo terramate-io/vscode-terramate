@@ -21,16 +21,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - name: Setup asdf
+        uses: asdf-vm/actions/setup@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-          cache: 'pnpm'
+      - name: Install asdf plugins and tools
+        run: |
+          asdf plugin add nodejs || true
+          asdf plugin add golang || true
+          asdf install
+
+      - name: Setup pnpm
+        run: npm install -g pnpm@10
 
       - name: Install dependencies
         run: pnpm install
@@ -79,4 +80,3 @@ jobs:
               repo: context.repo.repo,
               body: `## 📦 VSIX Package Ready for Testing\n\n**Version**: ${{ steps.package.outputs.version }}\n**Size**: ${{ steps.package.outputs.size }}\n\nDownload the VSIX from the [artifacts](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) to test this PR locally:\n\n\`\`\`bash\ncode --install-extension ${{ steps.package.outputs.name }}\n\`\`\``
             })
-
