@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Mineiros GmbH
+ * Copyright 2025 Terramate GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ export let platformEol: string;
  */
 export async function activate(docUri: vscode.Uri) {
 	// The extensionId is `publisher.name` from package.json
-	const ext = vscode.extensions.getExtension('mineiros.terramate');
+	const ext = vscode.extensions.getExtension('terramate.terramate');
 	if (ext === undefined) {
 		throw new Error("extension not found: check the publisher.name in the package.json");
 	}
@@ -36,7 +36,14 @@ export async function activate(docUri: vscode.Uri) {
 	try {
 		doc = await vscode.workspace.openTextDocument(docUri);
 		editor = await vscode.window.showTextDocument(doc);
-		await sleep(2000); // Wait for server activation
+		
+		// Wait longer for language server to start and process the file
+		// Language server needs time to:
+		// 1. Start (can take 1-2 seconds)
+		// 2. Initialize
+		// 3. Parse the file
+		// 4. Run diagnostics
+		await sleep(4000); // Increased from 2000ms to 4000ms
 	} catch (e) {
 		console.error(e);
 	}

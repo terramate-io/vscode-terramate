@@ -3,3 +3,8 @@ out/*
 package-lock.json
 .vscode-test/*
 bin/terramate-lsp
+
+.tsconfig.tsbuildinfo
+bin/
+
+*.vsix

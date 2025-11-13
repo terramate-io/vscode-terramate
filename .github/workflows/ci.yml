@@ -1,46 +1,115 @@
 name: CI
-on: push
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   checks:
-    runs-on: ubuntu-20.04
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
-        with:
-          go-version: "1.20"
-      - uses: actions/setup-node@v2
-        with:
-          node-version: ^18
+      - name: Checkout code
+        uses: actions/checkout@v5
 
-      - name: linting code
-        run: make lint
+      - name: Setup asdf
+        uses: asdf-vm/actions/setup@v4
 
-      - name: checking license on source code
+      - name: Install asdf plugins and tools
+        run: |
+          asdf plugin add nodejs || true
+          asdf plugin add golang || true
+          asdf install
+
+      - name: Setup pnpm
+        run: npm install -g pnpm@10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Compile TypeScript
+        run: pnpm compile
+
+      - name: Lint code
+        run: pnpm lint
+
+      - name: Validate grammar
+        run: python3 -m json.tool syntaxes/terramate.tmLanguage.json > /dev/null
+
+      - name: Check license headers
         run: make license/check
-  build:
+
+  test:
+    name: Test on ${{ matrix.os }} with VSCode ${{ matrix.vscode-version }}
     strategy:
+      fail-fast: false
       matrix:
-        version: [
-          '', # uses the minimum supported version defined in package.json
-          '1.62.0',
-          '1.63.0',
-          '1.68.0',
-          'stable',
-          'insiders'
-        ]
-        os: [macos-12, ubuntu-20.04]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        vscode-version: ['stable', 'insiders']
+        # Test minimum supported version only on Ubuntu to save CI time
+        include:
+          - os: ubuntu-latest
+            vscode-version: '1.85.0'
+    
     runs-on: ${{ matrix.os }}
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      # Use asdf on Linux/macOS
+      - name: Setup asdf (Linux/macOS)
+        if: runner.os != 'Windows'
+        uses: asdf-vm/actions/setup@v4
+
+      - name: Install tools via asdf (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          asdf plugin add nodejs || true
+          asdf plugin add golang || true
+          asdf install
+
+      # Use standard actions on Windows
+      - name: Setup Node.js (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/setup-node@v6
         with:
-          go-version: "1.20"
-      - uses: actions/setup-node@v2
+          node-version: '22'
+
+      - name: Setup Go (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/setup-go@v6
         with:
-          node-version: ^18
-      - name: Run tests
-        uses: GabrielBB/xvfb-action@v1.0
-        with:
-          run: make test VERSION=${{ matrix.version }}
+          go-version: '1.25'
+
+      - name: Setup pnpm
+        run: npm install -g pnpm@10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install terramate-ls
+        shell: bash
+        run: |
+          mkdir -p bin
+          GOBIN=$(pwd)/bin go install github.com/terramate-io/terramate/cmd/terramate-ls@latest
+          echo "$(pwd)/bin" >> $GITHUB_PATH
+
+      - name: Compile
+        run: pnpm compile
+
+      - name: Run E2E tests (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a sh ./scripts/e2e.sh ${{ matrix.vscode-version }} --grep "Syntax Recognition|Core LS"
+
+      - name: Run E2E tests (macOS)
+        if: runner.os == 'macOS'
+        run: sh ./scripts/e2e.sh ${{ matrix.vscode-version }} --grep "Syntax Recognition|Core LS"
+
+      - name: Run E2E tests (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: sh ./scripts/e2e.sh ${{ matrix.vscode-version }} --grep "Syntax Recognition|Core LS"

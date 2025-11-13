@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright 2022 Mineiros GmbH
+# Copyright 2025 Terramate GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,17 @@ export CODE_TESTS_PATH="$(pwd)/out/test"
 export CODE_TESTS_WORKSPACE="$(pwd)/testFixture"
 export CODE_TESTS_VERSION_CONSTRAINT="$(npm pkg get engines.vscode | tr -d '"')"
 export CODE_TESTS_VERSION=""
+
+# Add terramate-ls from bin/ directory (if installed via make deps)
 export PATH=$PATH:`pwd`/bin
 
-if [ $# -eq 1 ]; then
+if [ $# -ge 1 ]; then
     export CODE_TESTS_VERSION="$1"
 fi
+
+# Pass remaining args to mocha (for --grep filtering)
+shift 2>/dev/null || true
+export CODE_TESTS_MOCHA_ARGS="$*"
 
 echo "VERSION=$CODE_TESTS_VERSION"
 echo "CONSTRAINT=$CODE_TESTS_VERSION_CONSTRAINT"
