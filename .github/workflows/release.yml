@@ -67,7 +67,7 @@ jobs:
         run: |
           if [ -n "$VSCODE_ACCESS_TOKEN" ]; then
             echo "Publishing to VSCode Marketplace..."
-            pnpm exec vsce publish -p $VSCODE_ACCESS_TOKEN
+            pnpm exec vsce publish --packagePath terramate-${{ steps.version.outputs.version }}.vsix -p $VSCODE_ACCESS_TOKEN
           else
             echo "⚠️  VSCODE_ACCESS_TOKEN not set, skipping VSCode Marketplace publish"
           fi
@@ -78,7 +78,7 @@ jobs:
         run: |
           if [ -n "$OPEN_VSX_ACCESS_TOKEN" ]; then
             echo "Publishing to Open VSX..."
-            pnpm exec ovsx publish -p $OPEN_VSX_ACCESS_TOKEN
+            pnpm exec ovsx publish terramate-${{ steps.version.outputs.version }}.vsix -p $OPEN_VSX_ACCESS_TOKEN
           else
             echo "⚠️  OPEN_VSX_ACCESS_TOKEN not set, skipping Open VSX publish"
           fi
