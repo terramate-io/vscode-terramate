@@ -1,0 +1,98 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    if: github.repository == 'terramate-io/vscode-terramate'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup asdf
+        uses: asdf-vm/actions/setup@v4
+
+      - name: Install asdf plugins and tools
+        run: |
+          asdf plugin add nodejs || true
+          asdf plugin add golang || true
+          asdf install
+
+      - name: Setup pnpm
+        run: npm install -g pnpm@10
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Compile
+        run: pnpm compile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Create VSIX package
+        run: pnpm exec vsce package --no-dependencies
+
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "vsix_name=terramate-$VERSION.vsix" >> $GITHUB_OUTPUT
+
+      - name: Upload VSIX as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terramate-${{ steps.version.outputs.version }}
+          path: '*.vsix'
+          retention-days: 90
+
+      - name: Upload VSIX to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: '*.vsix'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to VSCode Marketplace
+        env:
+          VSCODE_ACCESS_TOKEN: ${{ secrets.VSCODE_ACCESS_TOKEN }}
+        run: |
+          if [ -n "$VSCODE_ACCESS_TOKEN" ]; then
+            echo "Publishing to VSCode Marketplace..."
+            pnpm exec vsce publish -p $VSCODE_ACCESS_TOKEN
+          else
+            echo "⚠️  VSCODE_ACCESS_TOKEN not set, skipping VSCode Marketplace publish"
+          fi
+
+      - name: Publish to Open VSX
+        env:
+          OPEN_VSX_ACCESS_TOKEN: ${{ secrets.OPEN_VSX_ACCESS_TOKEN }}
+        run: |
+          if [ -n "$OPEN_VSX_ACCESS_TOKEN" ]; then
+            echo "Publishing to Open VSX..."
+            pnpm exec ovsx publish -p $OPEN_VSX_ACCESS_TOKEN
+          else
+            echo "⚠️  OPEN_VSX_ACCESS_TOKEN not set, skipping Open VSX publish"
+          fi
+
+      - name: Summary
+        env:
+          VSCODE_ACCESS_TOKEN: ${{ secrets.VSCODE_ACCESS_TOKEN }}
+          OPEN_VSX_ACCESS_TOKEN: ${{ secrets.OPEN_VSX_ACCESS_TOKEN }}
+        run: |
+          echo "## ✅ Release Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version**: $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
+          echo "**Published to**:" >> $GITHUB_STEP_SUMMARY
+          if [ -n "$VSCODE_ACCESS_TOKEN" ]; then
+            echo "- ✅ VSCode Marketplace" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -n "$OPEN_VSX_ACCESS_TOKEN" ]; then
+            echo "- ✅ Open VSX Registry" >> $GITHUB_STEP_SUMMARY
+          fi

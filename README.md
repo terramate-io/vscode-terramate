@@ -136,6 +136,65 @@ To contribute to this project, please read:
 - [Terramate Contributing Guide](https://github.com/terramate-io/terramate/blob/main/CONTRIBUTING.md)
 - [CONTRIBUTING.md](https://github.com/terramate-io/vscode-terramate/blob/main/CONTRIBUTING.md) (extension-specific)
 
+## Release Process
+
+This project uses automated releases triggered by GitHub releases. Here's how to publish a new version:
+
+### 1. Bump the Version
+
+Use npm scripts to bump the version and create a git commit:
+
+```bash
+# For bug fixes (0.0.5 → 0.0.6)
+npm run version:patch
+
+# For new features (0.0.5 → 0.1.0)
+npm run version:minor
+
+# For breaking changes (0.0.5 → 1.0.0)
+npm run version:major
+```
+
+This will:
+- Update the version in `package.json`
+- Create a git commit with message `chore: bump version to X.X.X`
+- Create a git tag `vX.X.X`
+
+### 2. Push Changes and Tags
+
+```bash
+git push && git push --tags
+```
+
+### 3. Create a GitHub Release
+
+1. Go to [Releases](https://github.com/terramate-io/vscode-terramate/releases/new)
+2. Select the tag you just pushed (e.g., `v0.0.6`)
+3. Set release title (e.g., `v0.0.6` or `Release 0.0.6`)
+4. Add release notes describing changes
+5. Click **"Publish release"**
+
+### 4. Automated Publishing
+
+Once the release is published, the [Release Workflow](.github/workflows/release.yml) automatically:
+
+- ✅ Builds and compiles the extension
+- ✅ Runs linting and tests
+- ✅ Creates the VSIX package
+- ✅ Uploads the VSIX to the GitHub release
+- ✅ Publishes to [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=terramate.terramate)
+- ✅ Publishes to [Open VSX Registry](https://open-vsx.org/extension/terramate/terramate)
+
+The entire process takes 2-3 minutes. You can monitor progress in the [Actions tab](https://github.com/terramate-io/vscode-terramate/actions).
+
+### Requirements
+
+Publishing requires these GitHub secrets to be configured (maintainers only):
+- `VSCODE_ACCESS_TOKEN` - Personal Access Token from Azure DevOps for VSCode Marketplace
+- `OPEN_VSX_ACCESS_TOKEN` - Access Token from Open VSX Registry
+
+If tokens are not configured, the workflow will skip publishing but still create the VSIX package.
+
 ## License
 
 Apache 2.0 - See [LICENSE](LICENSE) for details.
