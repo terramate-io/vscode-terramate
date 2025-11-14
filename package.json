@@ -1,7 +1,7 @@
 {
 	"name": "terramate",
 	"displayName": "Terramate",
-	"publisher": "terramate",
+	"publisher": "mineiros",
 	"description": "VSCode Terramate Extension",
 	"author": "Terramate",
 	"icon": "assets/terramate.png",
