@@ -97,7 +97,8 @@ If you have `*.hcl` files associated with another extension (e.g., Terraform), y
 {
   "files.associations": {
     "*.tm.hcl": "terramate",
-    "*.tm": "terramate"
+    "*.tm": "terramate",
+    "*.tmgen": "terramate"
   }
 }
 ```
