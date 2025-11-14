@@ -27,7 +27,7 @@ export let platformEol: string;
  */
 export async function activate(docUri: vscode.Uri) {
 	// The extensionId is `publisher.name` from package.json
-	const ext = vscode.extensions.getExtension('terramate.terramate');
+	const ext = vscode.extensions.getExtension('mineiros.terramate');
 	if (ext === undefined) {
 		throw new Error("extension not found: check the publisher.name in the package.json");
 	}
