@@ -7,14 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2025-01-14
+
 ### Added
-- E2E testing infrastructure for LSP features
-- LSP edge cases test suite
-- LSP imports workspace test suite
-- LSP positions test suite
-- GitHub Actions release workflow
-- Comprehensive testing guides and documentation
-- Add support for Terramate Catalyst language constructs
+- 🚀 Automated release workflow via GitHub releases
+- 📚 AI assistant documentation (`agents.md`, `claude.md`)
+- 📝 Comprehensive release process documentation in README
+- ⚙️ npm version bump scripts (version:patch, version:minor, version:major)
+- 🎨 Updated extension icon
+
+### Changed
+- Streamlined release workflow to trigger only on GitHub releases
+- Improved CHANGELOG format following Keep a Changelog standard
 
 ## [0.0.5] - 2024
 
@@ -70,7 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Fixed** for any bug fixes
 - **Security** for vulnerability fixes
 
-[Unreleased]: https://github.com/terramate-io/vscode-terramate/compare/v0.0.5...HEAD
+[Unreleased]: https://github.com/terramate-io/vscode-terramate/compare/v0.0.6...HEAD
+[0.0.6]: https://github.com/terramate-io/vscode-terramate/releases/tag/v0.0.6
 [0.0.5]: https://github.com/terramate-io/vscode-terramate/releases/tag/v0.0.5
 [0.0.4]: https://github.com/terramate-io/vscode-terramate/releases/tag/v0.0.4
 [0.0.3]: https://github.com/terramate-io/vscode-terramate/releases/tag/v0.0.3

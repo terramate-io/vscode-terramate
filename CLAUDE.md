@@ -219,10 +219,15 @@ Before creating a release:
 - [ ] All tests pass: `pnpm test`
 - [ ] Linting passes: `pnpm lint`  
 - [ ] Manual testing in Extension Development Host
-- [ ] `CHANGELOG.md` updated (if exists, or add release notes)
+- [ ] **`CHANGELOG.md` updated**:
+  - [ ] Move items from `[Unreleased]` to new version section
+  - [ ] Add date in format: `[0.0.6] - YYYY-MM-DD`
+  - [ ] Categorize changes: Added, Changed, Fixed, etc.
+  - [ ] Update version links at bottom of file
+  - [ ] Commit: `git commit -m "docs: update changelog for v0.0.6"`
 - [ ] Version bumped: `npm run version:patch` (or minor/major)
 - [ ] Changes pushed: `git push && git push --tags`
-- [ ] GitHub release created with release notes
+- [ ] GitHub release created with release notes (can copy from CHANGELOG)
 - [ ] Monitor release workflow: [Actions tab](https://github.com/terramate-io/vscode-terramate/actions)
 - [ ] Verify publishing: [Marketplace](https://marketplace.visualstudio.com/items?itemName=terramate.terramate)
 

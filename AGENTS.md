@@ -171,7 +171,23 @@ suite('Test Suite Name', () => {
 
 ## Release Process
 
-### Version Bumping
+### 1. Update CHANGELOG
+
+Before bumping the version, update `CHANGELOG.md`:
+
+```bash
+# Edit CHANGELOG.md
+# - Move items from [Unreleased] to new version section
+# - Add date in format: [0.0.6] - YYYY-MM-DD
+# - Categorize changes: Added, Changed, Fixed, Removed, etc.
+# - Update version links at bottom of file
+
+# Commit the changelog
+git add CHANGELOG.md
+git commit -m "docs: update changelog for v0.0.6"
+```
+
+### 2. Version Bumping
 ```bash
 # Patch: 0.0.5 → 0.0.6 (bug fixes)
 npm run version:patch
@@ -188,7 +204,7 @@ This:
 2. Creates git commit: `chore: bump version to X.X.X`
 3. Creates git tag: `vX.X.X`
 
-### Publishing
+### 3. Publishing
 ```bash
 # Push changes and tags
 git push && git push --tags
