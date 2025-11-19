@@ -13,7 +13,8 @@ test-output.log
 tsconfig.tsbuildinfo
 
 # Dependencies and lock files
-node_modules/**
+# Note: node_modules is handled automatically by vsce - it includes production dependencies
+# when packaging without --no-dependencies flag
 pnpm-lock.yaml
 
 # Git and CI

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fixed extension activation error by including `vscode-languageclient` runtime dependency in VSIX package. Previously, the `--no-dependencies` flag in the release workflow excluded all node_modules, causing "Cannot find module 'vscode-languageclient/node'" error on installation.
+
 ## [0.0.6] - 2025-01-14
 
 ### Added
