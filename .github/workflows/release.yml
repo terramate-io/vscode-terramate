@@ -38,7 +38,7 @@ jobs:
         run: pnpm lint
 
       - name: Create VSIX package
-        run: pnpm exec vsce package --no-dependencies
+        run: pnpm exec vsce package
 
       - name: Get version
         id: version
