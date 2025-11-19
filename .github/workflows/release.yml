@@ -37,8 +37,13 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Prepare for packaging (npm install for vsce compatibility)
+        run: |
+          rm -rf node_modules
+          npm install --production
+
       - name: Create VSIX package
-        run: pnpm exec vsce package
+        run: npx vsce package
 
       - name: Get version
         id: version
