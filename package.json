@@ -6,7 +6,7 @@
 	"author": "Terramate",
 	"icon": "assets/terramate.png",
 	"license": "Apache",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/terramate-io/vscode-terramate"
@@ -115,17 +115,17 @@
 		"vscode-languageclient": "^9.0.1"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.38.0",
+		"@eslint/js": "^9.39.1",
 		"@types/mocha": "^10.0.10",
-		"@types/node": "^24.9.1",
+		"@types/node": "^24.10.1",
 		"@types/vscode": "1.85.0",
-		"@typescript-eslint/eslint-plugin": "^8.46.2",
-		"@typescript-eslint/parser": "^8.46.2",
+		"@typescript-eslint/eslint-plugin": "^8.47.0",
+		"@typescript-eslint/parser": "^8.47.0",
 		"@vscode/test-electron": "^2.5.2",
-		"@vscode/vsce": "^3.6.2",
-		"eslint": "^9.38.0",
-		"glob": "^11.0.3",
-		"mocha": "^11.7.4",
+		"@vscode/vsce": "^3.7.0",
+		"eslint": "^9.39.1",
+		"glob": "^11.1.0",
+		"mocha": "^11.7.5",
 		"ovsx": "^0.10.6",
 		"semver": "^7.7.3",
 		"typescript": "^5.9.3"

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.7] - 2025-11-19
+
 ### Fixed
 - Fixed extension activation error by including `vscode-languageclient` runtime dependency in VSIX package. Previously, the `--no-dependencies` flag in the release workflow excluded all node_modules, causing "Cannot find module 'vscode-languageclient/node'" error on installation.
 
@@ -77,7 +79,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Fixed** for any bug fixes
 - **Security** for vulnerability fixes
 
-[Unreleased]: https://github.com/terramate-io/vscode-terramate/compare/v0.0.6...HEAD
+[Unreleased]: https://github.com/terramate-io/vscode-terramate/compare/v0.0.7...HEAD
+[0.0.7]: https://github.com/terramate-io/vscode-terramate/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/terramate-io/vscode-terramate/releases/tag/v0.0.6
 [0.0.5]: https://github.com/terramate-io/vscode-terramate/releases/tag/v0.0.5
 [0.0.4]: https://github.com/terramate-io/vscode-terramate/releases/tag/v0.0.4
