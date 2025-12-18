@@ -13,7 +13,7 @@ If you are new to Terramate, [this article](https://terramate.io/rethinking-iac/
 
 Install `terramate-ls`:
 - **[Installation guide](https://terramate.io/docs/cli/installation)**
-- Or via Homebrew: `brew install terramate-io/tap/terramate`
+- Or via Homebrew: `brew install terramate` (this installs both `terramate` and `terramate-ls` binaries)
 
 The extension automatically detects `terramate-ls` in your PATH.
 
