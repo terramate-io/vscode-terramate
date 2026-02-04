@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Terramate Bundle Instance",
+  "description": "Schema for Terramate Catalyst bundle instance YAML files",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "terramate.io/cli/v1",
+      "description": "API version for Terramate Catalyst bundle instances"
+    },
+    "kind": {
+      "type": "string",
+      "const": "BundleInstance",
+      "description": "Resource kind"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Bundle instance name (lowercase alphanumeric, dashes, underscores)",
+          "pattern": "^[a-z][a-z0-9_-]*[a-z0-9]$",
+          "minLength": 2,
+          "maxLength": 255
+        },
+        "uuid": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Optional UUID for the bundle instance"
+        }
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "type": "object",
+      "required": ["source"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Bundle source path (e.g., /bundles/example.com/my-bundle/v1)"
+        },
+        "inputs": {
+          "type": "object",
+          "description": "Bundle input values. Input names and types are defined by the bundle definition.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
