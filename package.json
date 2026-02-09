@@ -45,6 +45,16 @@
 					"tm"
 				],
 				"configuration": "./language-configuration.json"
+			},
+			{
+				"id": "yaml",
+				"extensions": [
+					".tm.yml"
+				],
+				"aliases": [
+					"Terramate YAML",
+					"tm-yaml"
+				]
 			}
 		],
 		"grammars": [
@@ -52,6 +62,12 @@
 				"language": "terramate",
 				"scopeName": "source.tm",
 				"path": "./syntaxes/terramate.tmLanguage.json"
+			}
+		],
+		"yamlValidation": [
+			{
+				"fileMatch": "*.tm.yml",
+				"url": "./schemas/bundle-instance.schema.json"
 			}
 		],
 		"configuration": [

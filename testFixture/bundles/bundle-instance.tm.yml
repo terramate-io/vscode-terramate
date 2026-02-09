@@ -1,0 +1,12 @@
+apiVersion: terramate.io/cli/v1
+kind: BundleInstance
+metadata:
+  name: test-bundle-instance
+  uuid: 79a83f2e-dbc0-429e-80e0-d0c395f0f605
+spec:
+  source: /bundles/example.com/test-bundle/v1
+  inputs:
+    env: dev
+    name: test-instance
+    vpc_cidr: 10.0.0.0/16
+    tags: {}

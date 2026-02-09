@@ -23,7 +23,7 @@ Install the [Terramate Extension for VSCode](https://marketplace.visualstudio.co
 
 ### Step 3: Start Coding
 
-Open any folder containing Terramate files. Files with `.tm`, `.tm.hcl`, or `.tmgen` extensions will automatically activate the extension with full syntax highlighting and language server features.
+Open any folder containing Terramate files. Files with `.tm`, `.tm.hcl`, `.tmgen`, or `.tm.yml` extensions will automatically activate the extension with full syntax highlighting and language server features.
 
 ## Features
 
@@ -31,7 +31,8 @@ Open any folder containing Terramate files. Files with `.tm`, `.tm.hcl`, or `.tm
 
 Full syntax highlighting for all Terramate language constructs:
 - **Core blocks**: `terramate`, `stack`, `globals`, `generate_hcl`, `generate_file`, `assert`, `output`, `script`, `vendor`, `sharing_backend`, and more
-- **Pro blocks**: `define bundle`, `define component`, `scaffolding`  
+- **Pro blocks**: `define bundle`, `define component`, `scaffolding`
+- **YAML files**: Bundle instance files (`.tm.yml`) with JSON Schema-based autocomplete  
 
 ### Language Server Integration
 
@@ -44,6 +45,46 @@ When `terramate-ls` is installed, you get:
 - ✅ **Diagnostics** - Error and warning reporting
 
 **Bundle/Component Support**: Depends on your `terramate-ls` version. Language servers built from repositories with Pro features include full bundle and component validation.
+
+### Bundle Instance Support
+
+Bundle instances can be written in either YAML (`.tm.yml`) or HCL (`.tm.hcl`) format. Autocomplete support differs between formats:
+
+#### YAML Format (`.tm.yml`)
+
+The extension provides JSON Schema-based autocomplete and validation for bundle instance YAML files:
+
+- ✅ **Structure autocomplete** - Autocomplete for `apiVersion`, `kind`, `metadata`, `spec` fields
+- ✅ **Field validation** - Validates required fields and data types
+- ✅ **Input support** - Supports bundle input definitions in the `spec.inputs` section
+
+**Note**: For full autocomplete support, VS Code's built-in YAML support or the [Red Hat YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) is recommended.
+
+#### HCL Format (`.tm.hcl`)
+
+Bundle instances in HCL format use the `bundle` block syntax:
+
+```hcl
+bundle "my-bundle" {
+  source = "/bundles/example.com/my-bundle/v1"
+  inputs {
+    input_name = value
+  }
+}
+```
+
+**Autocomplete for HCL bundle instances**:
+- ✅ **Language server support** - Autocomplete comes from `terramate-catalyst-ls` via LSP
+- ✅ **Input name completion** - When typing inside `inputs { }` block, the language server provides completion for available input names based on the bundle definition
+- ✅ **Type validation** - Input values are validated against bundle input type definitions
+- ✅ **Hover documentation** - Input descriptions appear on hover
+
+**Requirements**:
+- Language server (`terramate-catalyst-ls`) must support LSP completion for bundle inputs
+- Bundle source must be resolvable to load input definitions
+- Bundle definition must exist at the specified `source` path
+
+**Note**: Unlike YAML which uses static JSON Schema, HCL autocomplete is dynamic and provided entirely by the language server. If autocomplete doesn't work, ensure you're using a language server version that supports bundle completion.
 
 ## Configuration
 
@@ -98,10 +139,13 @@ If you have `*.hcl` files associated with another extension (e.g., Terraform), y
   "files.associations": {
     "*.tm.hcl": "terramate",
     "*.tm": "terramate",
-    "*.tmgen": "terramate"
+    "*.tmgen": "terramate",
+    "*.tm.yml": "yaml"
   }
 }
 ```
+
+**Note**: `.tm.yml` files are automatically associated with YAML language for autocomplete support.
 
 ## Troubleshooting
 
@@ -129,7 +173,42 @@ If you have `*.hcl` files associated with another extension (e.g., Terraform), y
 
 1. Check the file is recognized as Terramate (bottom right of VSCode)
 2. Try reloading VSCode
-3. Check file extension is `.tm` or `.tm.hcl`
+3. Check file extension is `.tm`, `.tm.hcl`, `.tmgen`, or `.tm.yml`
+
+### YAML Autocomplete Not Working
+
+1. Ensure you have VS Code's built-in YAML support or install the [Red Hat YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+2. Verify the file extension is `.tm.yml`
+3. Check that the file follows the bundle instance schema structure
+4. Try reloading VS Code window (Cmd/Ctrl+Shift+P → "Reload Window")
+
+### Bundle Autocomplete Not Working (HCL Format)
+
+1. **Verify language server is running**:
+   - Check Output panel → "Terramate" channel
+   - Ensure `terramate-catalyst-ls` is detected and started
+
+2. **Check language server version**:
+   - Bundle input completion requires a language server that supports LSP completion
+   - Verify you're using `terramate-catalyst-ls` (not just `terramate-ls`)
+
+3. **Verify bundle source is resolvable**:
+   - Ensure the bundle definition exists at the path specified in `source`
+   - Check that bundle definition includes `input` blocks
+
+4. **Check bundle definition**:
+   - Bundle must have `define bundle` with `input` blocks defined
+   - Input definitions should include `type` and `description` for best autocomplete experience
+
+5. **Enable LSP trace** (for debugging):
+   ```json
+   {
+     "terramate.languageServer.trace.server": "verbose"
+   }
+   ```
+   Check Output panel → "Terramate Language Server Trace" for completion requests
+
+**Note**: If autocomplete still doesn't work, the language server may need enhancement to support bundle input completion. This would require changes to the `terramate-catalyst-ls` codebase.
 
 ## Contributing
 
